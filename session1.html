@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arduino Revision Note – Session 1</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Fira+Code:wght@400;600&display=swap');
+
+  :root {
+    --green: #1B6B2F;
+    --green-light: #E8F5E9;
+    --green-mid: #4CAF50;
+    --blue: #1565C0;
+    --blue-light: #E3F2FD;
+    --orange: #E65100;
+    --orange-light: #FFF3E0;
+    --yellow: #F9A825;
+    --yellow-light: #FFFDE7;
+    --purple: #6A1B9A;
+    --purple-light: #F3E5F5;
+    --red: #C62828;
+    --bg: #F8FBF8;
+    --text: #1A1A1A;
+    --gray: #546E7A;
+    --card-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 16px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #0A3D1F 0%, #1B6B2F 60%, #2E7D32 100%);
+    padding: 48px 32px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    color: #A5D6A7;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    color: #fff;
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .header h1 span { color: #A5D6A7; }
+  .header p {
+    color: rgba(255,255,255,0.75);
+    font-size: 15px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .emoji-row {
+    font-size: 28px;
+    margin: 20px 0 0;
+    letter-spacing: 8px;
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ── SECTION TITLES ── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 48px 0 20px;
+  }
+  .section-label .icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .section-label h2 {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--text);
+  }
+  .section-label h2 span {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--gray);
+    margin-bottom: 2px;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  .card p { color: #333; font-size: 15px; }
+
+  /* ── THE BIG MODEL ── */
+  .model-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 8px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .model-box {
+    flex: 1;
+    min-width: 160px;
+    border-radius: 14px;
+    padding: 20px 16px;
+    text-align: center;
+  }
+  .model-box .emoji { font-size: 32px; margin-bottom: 8px; }
+  .model-box h3 { font-size: 18px; font-weight: 900; margin-bottom: 6px; }
+  .model-box p { font-size: 13px; line-height: 1.5; }
+  .model-arrow {
+    font-size: 28px;
+    padding: 0 8px;
+    color: var(--gray);
+    font-weight: 900;
+  }
+  .model-input  { background: var(--blue-light); border: 2px solid #90CAF9; }
+  .model-input h3 { color: var(--blue); }
+  .model-process { background: var(--yellow-light); border: 2px solid #FFE082; }
+  .model-process h3 { color: #F57F17; }
+  .model-output  { background: var(--orange-light); border: 2px solid #FFCC80; }
+  .model-output h3 { color: var(--orange); }
+
+  /* ── SENSORS GRID ── */
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .sensor-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px 16px;
+    box-shadow: var(--card-shadow);
+    border-left: 4px solid;
+    text-align: center;
+  }
+  .sensor-card .big { font-size: 30px; margin-bottom: 8px; }
+  .sensor-card h4 { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+  .sensor-card p { font-size: 12px; color: var(--gray); }
+  .s-sound { border-color: #1565C0; }
+  .s-light { border-color: #F9A825; }
+  .s-button { border-color: #6A1B9A; }
+  .s-motion { border-color: #2E7D32; }
+  .s-code   { border-color: #E65100; }
+
+  /* ── BOARD DIAGRAM ── */
+  .board-wrap {
+    background: #263238;
+    border-radius: 16px;
+    padding: 28px;
+    color: #fff;
+  }
+  .board-title {
+    color: #80CBC4;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .pin-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .pin-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .pin-dot {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    font-weight: 800;
+  }
+  .pin-text h4 { font-size: 14px; font-weight: 800; color: #E0E0E0; }
+  .pin-text p  { font-size: 12px; color: #90A4AE; line-height: 1.4; }
+  .pd { background: #1565C0; }
+  .pa { background: #6A1B9A; }
+  .pp { background: #C62828; }
+  .pu { background: #2E7D32; }
+
+  /* ── CODE BLOCK ── */
+  .code-wrap {
+    background: #1E1E1E;
+    border-radius: 14px;
+    overflow: hidden;
+    margin: 16px 0;
+  }
+  .code-bar {
+    background: #2D2D2D;
+    padding: 10px 18px;
+    font-size: 12px;
+    color: #888;
+    font-family: 'Fira Code', monospace;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .code-bar::before { content: '●'; color: #FF5F56; }
+  .code-bar::after  { content: ''; }
+  pre {
+    padding: 20px 24px;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    overflow-x: auto;
+    margin: 0;
+  }
+  .c-green  { color: #4EC9B0; }  /* function names */
+  .c-yellow { color: #DCDCAA; }  /* function calls */
+  .c-blue   { color: #9CDCFE; }  /* variables */
+  .c-orange { color: #CE9178; }  /* strings/values */
+  .c-comment{ color: #6A9955; font-style: italic; }
+  .c-white  { color: #D4D4D4; }
+
+  /* ── EXPLAIN ROWS ── */
+  .explain-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 10px;
+  }
+  .explain-code {
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    background: #1E1E1E;
+    color: #CE9178;
+    padding: 8px 14px;
+    border-radius: 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .explain-text { font-size: 14px; color: #333; }
+  .explain-text strong { color: var(--green); }
+
+  /* ── QUIZ ── */
+  .quiz-card {
+    background: var(--green-light);
+    border: 2px solid #A5D6A7;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 12px;
+  }
+  .quiz-q {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    color: var(--green);
+  }
+  .quiz-q span { color: var(--text); font-weight: 400; }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option {
+    background: #fff;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: default;
+  }
+  .option-letter {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: #E0E0E0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .answer-box {
+    background: var(--green);
+    color: #fff;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    display: none;
+  }
+  .reveal-btn {
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 12px;
+  }
+  .reveal-btn:hover { background: #145A23; }
+
+  /* ── REMEMBER BOX ── */
+  .remember {
+    background: linear-gradient(135deg, #1B6B2F, #2E7D32);
+    color: #fff;
+    border-radius: 20px;
+    padding: 32px 28px;
+    margin: 48px 0 0;
+    text-align: center;
+  }
+  .remember h2 { font-size: 24px; font-weight: 900; margin-bottom: 16px; }
+  .remember-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .remember-item {
+    background: rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .remember-item .tick { font-size: 18px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 0 24px 40px;
+    color: var(--gray);
+    font-size: 13px;
+  }
+
+  @media (max-width: 600px) {
+    .model-row { flex-direction: column; }
+    .model-arrow { transform: rotate(90deg); }
+    .header h1 { font-size: 26px; }
+    .grid-3 { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-badge">Smart School · Session 1 Revision</div>
+  <h1>You Learned to Talk<br>to a <span>Computer</span> Today 🎉</h1>
+  <p>Read this on your own. See how much you remember. This is YOUR knowledge now.</p>
+  <div class="emoji-row">🤖 💡 🔌</div>
+</div>
+
+<div class="container">
+
+  <!-- SECTION 1: THE BIG IDEA -->
+  <div class="section-label">
+    <div class="icon" style="background:#E3F2FD;">🧠</div>
+    <h2><span>The Big Idea</span>Input → Processing → Output</h2>
+  </div>
+
+  <div class="card">
+    <p style="margin-bottom:20px;font-size:15px;">Every electronic device in the world follows this same pattern. From your phone to a robot to a traffic light — they all do this:</p>
+    <div class="model-row">
+      <div class="model-box model-input">
+        <div class="emoji">👂</div>
+        <h3>INPUT</h3>
+        <p>Collects information from the world</p>
+      </div>
+      <div class="model-arrow">→</div>
+      <div class="model-box model-process">
+        <div class="emoji">⚙️</div>
+        <h3>PROCESSING</h3>
+        <p>Decides what to do with the information</p>
+      </div>
+      <div class="model-arrow">→</div>
+      <div class="model-box model-output">
+        <div class="emoji">📢</div>
+        <h3>OUTPUT</h3>
+        <p>Does something you can see, hear, or feel</p>
+      </div>
+    </div>
+    <p style="margin-top:20px;font-size:14px;color:#555;text-align:center;">🤔 <em>Example: When you clap near a clap-sensor light — the clap is the INPUT, the Arduino PROCESSES it, the light turning on is the OUTPUT.</em></p>
+  </div>
+
+  <!-- SECTION 2: INPUTS / SENSORS -->
+  <div class="section-label">
+    <div class="icon" style="background:#E3F2FD; font-size:18px;">👂</div>
+    <h2><span>Step 1</span>Inputs & Sensors</h2>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <p><strong>Sensors are how the Arduino hears the world.</strong> They collect data from the environment and send it to the board. Even a coat on a sensor is an input — anything that sends a signal counts!</p>
+  </div>
+
+  <div class="grid-3">
+    <div class="sensor-card s-sound">
+      <div class="big">🎤</div>
+      <h4>Sound Detector</h4>
+      <p>Like a microphone. Detects sound or clapping.</p>
+    </div>
+    <div class="sensor-card s-light">
+      <div class="big">☀️</div>
+      <h4>Light Detector</h4>
+      <p>Detects how bright or dark the room is.</p>
+    </div>
+    <div class="sensor-card s-button">
+      <div class="big">🔘</div>
+      <h4>Button / Switch</h4>
+      <p>Pressed = signal sent. Not pressed = no signal.</p>
+    </div>
+    <div class="sensor-card s-motion">
+      <div class="big">🏃</div>
+      <h4>Motion Sensor</h4>
+      <p>Detects when something is moving nearby.</p>
+    </div>
+    <div class="sensor-card s-code">
+      <div class="big">💻</div>
+      <h4>Code (Instructions)</h4>
+      <p>Your written code tells the Arduino what to watch for and when to act.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 3: PROCESSING -->
+  <div class="section-label">
+    <div class="icon" style="background:#FFFDE7;">⚙️</div>
+    <h2><span>Step 2</span>Processing — The Arduino Board</h2>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <p style="margin-bottom:12px;"><strong>The Arduino board is the brain.</strong> It reads what sensors tell it, runs your code, and decides what to do. But remember —</p>
+    <div style="background:#FFF3E0;border-left:4px solid #E65100;border-radius:8px;padding:14px 16px;">
+      <strong style="color:#E65100;">⚠️ The robot is dumb until YOU tell it what to do.</strong><br>
+      <span style="font-size:14px;color:#555;">Without your code, the Arduino does nothing. Your instructions are what make it smart.</span>
+    </div>
+  </div>
+
+  <div class="board-wrap">
+    <div class="board-title">Arduino Uno R3 — Parts You Must Know</div>
+    <div class="pin-row">
+      <div class="pin-item">
+        <div class="pin-dot pu">🔌</div>
+        <div class="pin-text">
+          <h4>USB Port</h4>
+          <p>This is how you connect the Arduino to your computer. Your code travels through here. It also gives the board power.</p>
+        </div>
+      </div>
+      <div class="pin-item">
+        <div class="pin-dot pd">D</div>
+        <div class="pin-text">
+          <h4>Digital Pins (0–13)</h4>
+          <p>These work with ON or OFF signals only. Pin 13 is connected to the small LED on the board. Use these for LEDs, buzzers, and buttons.</p>
+        </div>
+      </div>
+      <div class="pin-item">
+        <div class="pin-dot pa">A</div>
+        <div class="pin-text">
+          <h4>Analog Pins (A0–A5)</h4>
+          <p>These can read values in between — not just on or off. Used for sensors that measure things like light level or temperature (many different values).</p>
+        </div>
+      </div>
+      <div class="pin-item">
+        <div class="pin-dot pp">⚡</div>
+        <div class="pin-text">
+          <h4>Power Pins (5V, 3.3V, GND)</h4>
+          <p>5V and 3.3V give power to your components. GND (Ground) is the return path — electricity always needs somewhere to go back to.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- NUMBER LINE VISUAL -->
+    <div style="margin-top:28px;border-top:1px solid rgba(255,255,255,0.1);padding-top:24px;">
+      <div style="color:#80CBC4;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;text-align:center;">Digital vs Analog — What's the difference?</div>
+
+      <!-- Digital number line -->
+      <div style="margin-bottom:22px;">
+        <div style="color:#90CAF9;font-size:13px;font-weight:800;margin-bottom:10px;">🔵 DIGITAL PIN — Only 2 possible values</div>
+        <div style="position:relative;height:36px;background:rgba(255,255,255,0.06);border-radius:8px;display:flex;align-items:center;padding:0 16px;">
+          <div style="position:absolute;left:16px;width:calc(100% - 32px);height:4px;background:rgba(255,255,255,0.15);border-radius:2px;"></div>
+          <!-- 0 dot -->
+          <div style="position:absolute;left:16px;width:28px;height:28px;background:#EF5350;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;z-index:1;">0</div>
+          <!-- 1 dot -->
+          <div style="position:absolute;right:16px;width:28px;height:28px;background:#66BB6A;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;z-index:1;">1</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px;padding:0 16px;">
+          <span style="color:#EF9A9A;font-size:12px;font-weight:700;">LOW = OFF</span>
+          <span style="color:#A5D6A7;font-size:12px;font-weight:700;">HIGH = ON</span>
+        </div>
+        <div style="text-align:center;margin-top:4px;color:rgba(255,255,255,0.4);font-size:11px;">Nothing in between. It's either OFF or ON. That's it.</div>
+      </div>
+
+      <!-- Analog number line -->
+      <div>
+        <div style="color:#CE93D8;font-size:13px;font-weight:800;margin-bottom:10px;">🟣 ANALOG PIN — 256 possible values (0 to 255)</div>
+        <div style="position:relative;height:36px;border-radius:8px;overflow:hidden;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to right, #1565C0, #7B1FA2, #AD1457, #E65100, #F57F17);opacity:0.7;border-radius:8px;"></div>
+          <!-- tick marks -->
+          <div style="position:absolute;inset:0;display:flex;align-items:center;padding:0 16px;">
+            <div style="width:100%;display:flex;justify-content:space-between;align-items:center;">
+              <div style="width:20px;height:20px;background:rgba(255,255,255,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#1565C0;">0</div>
+              <div style="width:2px;height:12px;background:rgba(255,255,255,0.4);border-radius:1px;"></div>
+              <div style="width:2px;height:12px;background:rgba(255,255,255,0.4);border-radius:1px;"></div>
+              <div style="width:2px;height:12px;background:rgba(255,255,255,0.4);border-radius:1px;"></div>
+              <div style="color:rgba(255,255,255,0.8);font-size:11px;font-weight:700;">128</div>
+              <div style="width:2px;height:12px;background:rgba(255,255,255,0.4);border-radius:1px;"></div>
+              <div style="width:2px;height:12px;background:rgba(255,255,255,0.4);border-radius:1px;"></div>
+              <div style="width:2px;height:12px;background:rgba(255,255,255,0.4);border-radius:1px;"></div>
+              <div style="width:24px;height:24px;background:rgba(255,255,255,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:#E65100;">255</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px;padding:0 16px;">
+          <span style="color:#90CAF9;font-size:12px;font-weight:700;">LOW (0) = Off / Dark / Quiet</span>
+          <span style="color:#FFCC80;font-size:12px;font-weight:700;">HIGH (255) = Bright / Loud</span>
+        </div>
+        <div style="text-align:center;margin-top:4px;color:rgba(255,255,255,0.4);font-size:11px;">Everything in between too — like a dimmer switch, not just on/off.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: OUTPUTS -->
+  <div class="section-label">
+    <div class="icon" style="background:#FFF3E0;">📢</div>
+    <h2><span>Step 3</span>Outputs</h2>
+  </div>
+
+  <div class="card">
+    <p style="margin-bottom:16px;"><strong>Outputs are how the Arduino talks back to the world.</strong> After the code is processed, something physical happens:</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;">
+      <div style="background:#FFF9C4;border-radius:10px;padding:12px 18px;text-align:center;flex:1;min-width:100px;">
+        <div style="font-size:26px;">💡</div>
+        <div style="font-size:13px;font-weight:700;margin-top:4px;">LED</div>
+        <div style="font-size:11px;color:#666;">Light</div>
+      </div>
+      <div style="background:#E8F5E9;border-radius:10px;padding:12px 18px;text-align:center;flex:1;min-width:100px;">
+        <div style="font-size:26px;">🔊</div>
+        <div style="font-size:13px;font-weight:700;margin-top:4px;">Speaker / Buzzer</div>
+        <div style="font-size:11px;color:#666;">Sound</div>
+      </div>
+      <div style="background:#E3F2FD;border-radius:10px;padding:12px 18px;text-align:center;flex:1;min-width:100px;">
+        <div style="font-size:26px;">📺</div>
+        <div style="font-size:13px;font-weight:700;margin-top:4px;">Screen</div>
+        <div style="font-size:11px;color:#666;">Display</div>
+      </div>
+      <div style="background:#F3E5F5;border-radius:10px;padding:12px 18px;text-align:center;flex:1;min-width:100px;">
+        <div style="font-size:26px;">⚙️</div>
+        <div style="font-size:13px;font-weight:700;margin-top:4px;">Motor</div>
+        <div style="font-size:11px;color:#666;">Movement</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: THE CODE -->
+  <div class="section-label">
+    <div class="icon" style="background:#E8F5E9;">💻</div>
+    <h2><span>The Code You Wrote</span>Blink — Your First Program</h2>
+  </div>
+
+  <div class="card" style="margin-bottom:0;">
+    <p style="margin-bottom:16px;">This is the code that made your LED blink. Read it again — you'll understand more now.</p>
+    <div class="code-wrap">
+      <div class="code-bar">blink.ino</div>
+      <pre><span class="c-comment">// Tell the Arduino to set up the LED pin</span>
+<span class="c-green">void</span> <span class="c-yellow">setup</span><span class="c-white">() {</span>
+  <span class="c-yellow">pinMode</span><span class="c-white">(</span><span class="c-blue">LED_BUILTIN</span><span class="c-white">,</span> <span class="c-orange">OUTPUT</span><span class="c-white">);</span>  <span class="c-comment">// pin 13 → sending out</span>
+<span class="c-white">}</span>
+
+<span class="c-comment">// This runs forever — over and over</span>
+<span class="c-green">void</span> <span class="c-yellow">loop</span><span class="c-white">() {</span>
+  <span class="c-yellow">digitalWrite</span><span class="c-white">(</span><span class="c-blue">LED_BUILTIN</span><span class="c-white">,</span> <span class="c-orange">HIGH</span><span class="c-white">);</span>  <span class="c-comment">// LED ON  (1)</span>
+  <span class="c-yellow">delay</span><span class="c-white">(</span><span class="c-orange">1000</span><span class="c-white">);</span>                   <span class="c-comment">// wait 1 second</span>
+  <span class="c-yellow">digitalWrite</span><span class="c-white">(</span><span class="c-blue">LED_BUILTIN</span><span class="c-white">,</span> <span class="c-orange">LOW</span><span class="c-white">);</span>   <span class="c-comment">// LED OFF (0)</span>
+  <span class="c-yellow">delay</span><span class="c-white">(</span><span class="c-orange">1000</span><span class="c-white">);</span>                   <span class="c-comment">// wait 1 second</span>
+<span class="c-white">}</span></pre>
+    </div>
+  </div>
+
+  <!-- CODE EXPLANATIONS -->
+  <div style="margin-top:16px;">
+    <div class="explain-row">
+      <div class="explain-code">void setup()</div>
+      <div class="explain-text">Runs <strong>once</strong> when the board turns on. Like loading a game — it sets everything up before you start playing.</div>
+    </div>
+    <div class="explain-row">
+      <div class="explain-code">pinMode(pin, OUTPUT)</div>
+      <div class="explain-text">Tells a pin its job. <strong>OUTPUT</strong> means it will be sending electricity out (like pin 13 to the LED).</div>
+    </div>
+    <div class="explain-row">
+      <div class="explain-code">void loop()</div>
+      <div class="explain-text">Runs <strong>forever</strong>, over and over, until you turn the board off. Your main behaviour lives here.</div>
+    </div>
+    <div class="explain-row">
+      <div class="explain-code">digitalWrite(pin, HIGH)</div>
+      <div class="explain-text">Sends electricity to a pin. <strong>HIGH = 1 = ON.</strong> The LED turns on.</div>
+    </div>
+    <div class="explain-row">
+      <div class="explain-code">digitalWrite(pin, LOW)</div>
+      <div class="explain-text">Stops electricity to a pin. <strong>LOW = 0 = OFF.</strong> The LED turns off.</div>
+    </div>
+    <div class="explain-row">
+      <div class="explain-code">delay(1000)</div>
+      <div class="explain-text">Tells the board to <strong>wait</strong>. 1000 = 1 second. 500 = half a second. Change this number to change the speed.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: WOKWI -->
+  <div class="section-label">
+    <div class="icon" style="background:#F3E5F5;">🖥️</div>
+    <h2><span>Where We Practiced</span>Wokwi Simulator</h2>
+  </div>
+  <div class="card">
+    <p>We used <strong>Wokwi (wokwi.com)</strong> — a website where you can build Arduino circuits and test code without a physical board. You can go back and practice there anytime, for free.</p>
+    <div style="background:#F3E5F5;border-radius:10px;padding:14px 16px;margin-top:14px;font-size:14px;">
+      🌐 Go to <strong style="color:#6A1B9A;">wokwi.com</strong> → New Project → Arduino Uno → Start experimenting!
+    </div>
+  </div>
+
+  <!-- SECTION 7: QUIZ -->
+  <div class="section-label">
+    <div class="icon" style="background:#E8F5E9;">✏️</div>
+    <h2><span>Test Yourself</span>Quick Quiz</h2>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-q">Q1. <span>A microphone on an Arduino is an example of a…</span></div>
+    <div class="options">
+      <div class="option"><div class="option-letter">A</div>Output</div>
+      <div class="option"><div class="option-letter">B</div>Input / Sensor</div>
+      <div class="option"><div class="option-letter">C</div>Processing unit</div>
+    </div>
+    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <div class="answer-box">✅ B — A microphone is a sensor. It collects sound from the environment and sends it to the Arduino as INPUT.</div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-q">Q2. <span>Which part of the code runs over and over forever?</span></div>
+    <div class="options">
+      <div class="option"><div class="option-letter">A</div>void setup()</div>
+      <div class="option"><div class="option-letter">B</div>pinMode()</div>
+      <div class="option"><div class="option-letter">C</div>void loop()</div>
+    </div>
+    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <div class="answer-box">✅ C — void loop() runs continuously as long as the board has power. That's where your behaviour lives.</div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-q">Q3. <span>If you write delay(500), how long does the board wait?</span></div>
+    <div class="options">
+      <div class="option"><div class="option-letter">A</div>5 seconds</div>
+      <div class="option"><div class="option-letter">B</div>Half a second</div>
+      <div class="option"><div class="option-letter">C</div>500 minutes</div>
+    </div>
+    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <div class="answer-box">✅ B — delay() counts in milliseconds. 1000ms = 1 second, so 500ms = half a second.</div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-q">Q4. <span>You want the LED to blink very slowly. What do you change?</span></div>
+    <div class="options">
+      <div class="option"><div class="option-letter">A</div>Make the delay number smaller</div>
+      <div class="option"><div class="option-letter">B</div>Make the delay number bigger</div>
+      <div class="option"><div class="option-letter">C</div>Delete void setup()</div>
+    </div>
+    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <div class="answer-box">✅ B — A bigger delay number means a longer wait between ON and OFF, so the LED blinks more slowly.</div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-q">Q5. <span>Which pins would you use to read a temperature sensor?</span></div>
+    <div class="options">
+      <div class="option"><div class="option-letter">A</div>Digital Pins</div>
+      <div class="option"><div class="option-letter">B</div>Power Pins (5V / GND)</div>
+      <div class="option"><div class="option-letter">C</div>Analog Pins</div>
+    </div>
+    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <div class="answer-box">✅ C — Analog pins can read values that aren't just ON or OFF. Temperature has many values (18°, 24°, 31°...) so we use Analog pins.</div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-q">Q6. <span>A digital pin can have how many possible values?</span></div>
+    <div class="options">
+      <div class="option"><div class="option-letter">A</div>256 values (0 to 255)</div>
+      <div class="option"><div class="option-letter">B</div>Only 2 values (0 and 1)</div>
+      <div class="option"><div class="option-letter">C</div>Unlimited values</div>
+    </div>
+    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <div class="answer-box">✅ B — Digital is always either 0 (OFF) or 1 (ON). Nothing in between. That's what makes it "digital."</div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-q">Q7. <span>What does HIGH mean when you write digitalWrite(pin, HIGH)?</span></div>
+    <div class="options">
+      <div class="option"><div class="option-letter">A</div>Wait for a signal</div>
+      <div class="option"><div class="option-letter">B</div>Turn the pin OFF</div>
+      <div class="option"><div class="option-letter">C</div>Send electricity through the pin (turn it ON)</div>
+    </div>
+    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <div class="answer-box">✅ C — HIGH means the pin sends electricity out. HIGH = 1 = ON. For an LED connected to that pin, it lights up.</div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-q">Q8. <span>An LED is an example of which part of the Input → Processing → Output model?</span></div>
+    <div class="options">
+      <div class="option"><div class="option-letter">A</div>Input</div>
+      <div class="option"><div class="option-letter">B</div>Processing</div>
+      <div class="option"><div class="option-letter">C</div>Output</div>
+    </div>
+    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <div class="answer-box">✅ C — An LED produces light, which is something you can see. It is an OUTPUT — the result of what the Arduino decided to do.</div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-q">Q9. <span>What is the Arduino board's role in the Input → Processing → Output model?</span></div>
+    <div class="options">
+      <div class="option"><div class="option-letter">A</div>It is an output — it shows the result</div>
+      <div class="option"><div class="option-letter">B</div>It is the processing unit — it runs your code and decides what to do</div>
+      <div class="option"><div class="option-letter">C</div>It is an input — it collects data from the world</div>
+    </div>
+    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <div class="answer-box">✅ B — The Arduino board is the brain. It takes information from inputs, runs your code, and decides what outputs to trigger.</div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-q">Q10. <span>True or False: The Arduino will work on its own without any code from you.</span></div>
+    <div class="options">
+      <div class="option"><div class="option-letter">A</div>True — it has a built-in brain that figures things out</div>
+      <div class="option"><div class="option-letter">B</div>False — it is dumb until you give it instructions</div>
+    </div>
+    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <div class="answer-box">✅ B — False! The Arduino does nothing without your code. YOU are what makes it smart. Without instructions, it just sits there.</div>
+  </div>
+
+  <!-- WHAT'S NEXT -->
+  <div class="section-label">
+    <div class="icon" style="background:#FFF3E0;">🚀</div>
+    <h2><span>Coming Up</span>What's Next in Session 2?</h2>
+  </div>
+  <div class="card" style="border-left:4px solid var(--orange);">
+    <p style="margin-bottom:12px;">In the next session, you'll go beyond the built-in LED and start controlling <strong>more outputs</strong> — your own LED wired to the board, maybe a buzzer, maybe even two LEDs at once.</p>
+    <p style="font-size:14px;color:#555;">🤔 <em>Before then, think about this: How would you make an LED turn on only when it gets dark? What would you need?</em></p>
+  </div>
+
+  <!-- REMEMBER BOX -->
+  <div class="remember">
+    <h2>🧠 The 5 Things to Remember</h2>
+    <div class="remember-items">
+      <div class="remember-item"><span class="tick">1️⃣</span> Every device: Input → Processing → Output</div>
+      <div class="remember-item"><span class="tick">2️⃣</span> Sensors are inputs. LEDs, motors, speakers are outputs.</div>
+      <div class="remember-item"><span class="tick">3️⃣</span> void setup() runs once. void loop() runs forever.</div>
+      <div class="remember-item"><span class="tick">4️⃣</span> HIGH = ON (1). LOW = OFF (0).</div>
+      <div class="remember-item"><span class="tick">5️⃣</span> The Arduino is dumb until YOU give it instructions.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>Smart School · Government Robotics Education Initiative · Session 1</p>
+  <p style="margin-top:4px;">You did great today. Now own this knowledge. 💪</p>
+</div>
+
+<script>
+  function reveal(btn) {
+    const box = btn.nextElementSibling;
+    box.style.display = 'block';
+    btn.style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
