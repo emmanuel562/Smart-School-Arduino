@@ -315,6 +315,7 @@
   .options { display: flex; flex-direction: column; gap: 8px; }
   .option {
     background: #fff;
+    border: 1px solid transparent;
     border-radius: 10px;
     padding: 12px 16px;
     font-size: 14px;
@@ -322,7 +323,26 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    cursor: default;
+    cursor: pointer;
+    transition: transform 0.18s ease, border-color 0.2s ease, background-color 0.2s ease;
+  }
+  .option:hover:not(.disabled):not(.correct):not(.wrong) {
+    background: #F6F6F6;
+  }
+  .option.disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+    pointer-events: none;
+  }
+  .option.correct {
+    background: #D7F2E7;
+    border-color: #34A853;
+    animation: pop 0.22s ease;
+  }
+  .option.wrong {
+    background: #FFEBEB;
+    border-color: #D32F2F;
+    animation: shake 0.28s ease;
   }
   .option-letter {
     width: 28px; height: 28px;
@@ -333,6 +353,23 @@
     font-weight: 800;
     flex-shrink: 0;
   }
+  .feedback-box {
+    display: none;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: opacity 0.24s ease, transform 0.24s ease;
+  }
+  .feedback-box.correct {
+    background: #E8F5E9;
+    color: #1B5E20;
+  }
+  .feedback-box.wrong {
+    background: #FFEBEE;
+    color: #B71C1C;
+  }
   .answer-box {
     background: var(--green);
     color: #fff;
@@ -342,6 +379,14 @@
     font-size: 14px;
     font-weight: 600;
     display: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.24s ease, transform 0.24s ease;
+  }
+  .answer-box.visible {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
   }
   .reveal-btn {
     background: var(--green);
@@ -354,8 +399,25 @@
     font-weight: 700;
     cursor: pointer;
     margin-top: 12px;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
   }
-  .reveal-btn:hover { background: #145A23; }
+  .reveal-btn:hover:not(:disabled) { background: #145A23; }
+  .reveal-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    background: #A5D6A7;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    75% { transform: translateX(-2px); }
+  }
+  @keyframes pop {
+    0% { transform: scale(0.98); }
+    60% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+  }
 
   /* ── REMEMBER BOX ── */
   .remember {
@@ -686,10 +748,10 @@
     <div class="quiz-q">Q1. <span>A microphone on an Arduino is an example of a…</span></div>
     <div class="options">
       <div class="option"><div class="option-letter">A</div>Output</div>
-      <div class="option"><div class="option-letter">B</div>Input / Sensor</div>
+    <div class="option" data-correct="true"><div class="option-letter">B</div>Input / Sensor</div>
       <div class="option"><div class="option-letter">C</div>Processing unit</div>
     </div>
-    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <button class="reveal-btn">Show Answer</button>
     <div class="answer-box">✅ B — A microphone is a sensor. It collects sound from the environment and sends it to the Arduino as INPUT.</div>
   </div>
 
@@ -698,9 +760,9 @@
     <div class="options">
       <div class="option"><div class="option-letter">A</div>void setup()</div>
       <div class="option"><div class="option-letter">B</div>pinMode()</div>
-      <div class="option"><div class="option-letter">C</div>void loop()</div>
+    <div class="option" data-correct="true"><div class="option-letter">C</div>void loop()</div>
     </div>
-    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <button class="reveal-btn">Show Answer</button>
     <div class="answer-box">✅ C — void loop() runs continuously as long as the board has power. That's where your behaviour lives.</div>
   </div>
 
@@ -708,10 +770,10 @@
     <div class="quiz-q">Q3. <span>If you write delay(500), how long does the board wait?</span></div>
     <div class="options">
       <div class="option"><div class="option-letter">A</div>5 seconds</div>
-      <div class="option"><div class="option-letter">B</div>Half a second</div>
+    <div class="option" data-correct="true"><div class="option-letter">B</div>Half a second</div>
       <div class="option"><div class="option-letter">C</div>500 minutes</div>
     </div>
-    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <button class="reveal-btn">Show Answer</button>
     <div class="answer-box">✅ B — delay() counts in milliseconds. 1000ms = 1 second, so 500ms = half a second.</div>
   </div>
 
@@ -719,10 +781,10 @@
     <div class="quiz-q">Q4. <span>You want the LED to blink very slowly. What do you change?</span></div>
     <div class="options">
       <div class="option"><div class="option-letter">A</div>Make the delay number smaller</div>
-      <div class="option"><div class="option-letter">B</div>Make the delay number bigger</div>
+    <div class="option" data-correct="true"><div class="option-letter">B</div>Make the delay number bigger</div>
       <div class="option"><div class="option-letter">C</div>Delete void setup()</div>
     </div>
-    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <button class="reveal-btn">Show Answer</button>
     <div class="answer-box">✅ B — A bigger delay number means a longer wait between ON and OFF, so the LED blinks more slowly.</div>
   </div>
 
@@ -731,9 +793,9 @@
     <div class="options">
       <div class="option"><div class="option-letter">A</div>Digital Pins</div>
       <div class="option"><div class="option-letter">B</div>Power Pins (5V / GND)</div>
-      <div class="option"><div class="option-letter">C</div>Analog Pins</div>
+    <div class="option" data-correct="true"><div class="option-letter">C</div>Analog Pins</div>
     </div>
-    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <button class="reveal-btn">Show Answer</button>
     <div class="answer-box">✅ C — Analog pins can read values that aren't just ON or OFF. Temperature has many values (18°, 24°, 31°...) so we use Analog pins.</div>
   </div>
 
@@ -741,10 +803,10 @@
     <div class="quiz-q">Q6. <span>A digital pin can have how many possible values?</span></div>
     <div class="options">
       <div class="option"><div class="option-letter">A</div>256 values (0 to 255)</div>
-      <div class="option"><div class="option-letter">B</div>Only 2 values (0 and 1)</div>
+    <div class="option" data-correct="true"><div class="option-letter">B</div>Only 2 values (0 and 1)</div>
       <div class="option"><div class="option-letter">C</div>Unlimited values</div>
     </div>
-    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <button class="reveal-btn">Show Answer</button>
     <div class="answer-box">✅ B — Digital is always either 0 (OFF) or 1 (ON). Nothing in between. That's what makes it "digital."</div>
   </div>
 
@@ -753,9 +815,9 @@
     <div class="options">
       <div class="option"><div class="option-letter">A</div>Wait for a signal</div>
       <div class="option"><div class="option-letter">B</div>Turn the pin OFF</div>
-      <div class="option"><div class="option-letter">C</div>Send electricity through the pin (turn it ON)</div>
+    <div class="option" data-correct="true"><div class="option-letter">C</div>Send electricity through the pin (turn it ON)</div>
     </div>
-    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <button class="reveal-btn">Show Answer</button>
     <div class="answer-box">✅ C — HIGH means the pin sends electricity out. HIGH = 1 = ON. For an LED connected to that pin, it lights up.</div>
   </div>
 
@@ -764,9 +826,9 @@
     <div class="options">
       <div class="option"><div class="option-letter">A</div>Input</div>
       <div class="option"><div class="option-letter">B</div>Processing</div>
-      <div class="option"><div class="option-letter">C</div>Output</div>
+    <div class="option" data-correct="true"><div class="option-letter">C</div>Output</div>
     </div>
-    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <button class="reveal-btn">Show Answer</button>
     <div class="answer-box">✅ C — An LED produces light, which is something you can see. It is an OUTPUT — the result of what the Arduino decided to do.</div>
   </div>
 
@@ -774,10 +836,10 @@
     <div class="quiz-q">Q9. <span>What is the Arduino board's role in the Input → Processing → Output model?</span></div>
     <div class="options">
       <div class="option"><div class="option-letter">A</div>It is an output — it shows the result</div>
-      <div class="option"><div class="option-letter">B</div>It is the processing unit — it runs your code and decides what to do</div>
+    <div class="option" data-correct="true"><div class="option-letter">B</div>It is the processing unit — it runs your code and decides what to do</div>
       <div class="option"><div class="option-letter">C</div>It is an input — it collects data from the world</div>
     </div>
-    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <button class="reveal-btn">Show Answer</button>
     <div class="answer-box">✅ B — The Arduino board is the brain. It takes information from inputs, runs your code, and decides what outputs to trigger.</div>
   </div>
 
@@ -785,9 +847,9 @@
     <div class="quiz-q">Q10. <span>True or False: The Arduino will work on its own without any code from you.</span></div>
     <div class="options">
       <div class="option"><div class="option-letter">A</div>True — it has a built-in brain that figures things out</div>
-      <div class="option"><div class="option-letter">B</div>False — it is dumb until you give it instructions</div>
+    <div class="option" data-correct="true"><div class="option-letter">B</div>False — it is dumb until you give it instructions</div>
     </div>
-    <button class="reveal-btn" onclick="reveal(this)">Show Answer</button>
+    <button class="reveal-btn">Show Answer</button>
     <div class="answer-box">✅ B — False! The Arduino does nothing without your code. YOU are what makes it smart. Without instructions, it just sits there.</div>
   </div>
 
@@ -821,11 +883,42 @@
 </div>
 
 <script>
-  function reveal(btn) {
-    const box = btn.nextElementSibling;
-    box.style.display = 'block';
-    btn.style.display = 'none';
-  }
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.quiz-card').forEach(card => {
+      const options = Array.from(card.querySelectorAll('.option'));
+      const revealBtn = card.querySelector('.reveal-btn');
+      const answerBox = card.querySelector('.answer-box');
+      const feedback = document.createElement('div');
+      feedback.className = 'feedback-box';
+      card.insertBefore(feedback, revealBtn);
+
+      revealBtn.disabled = true;
+      revealBtn.addEventListener('click', () => {
+        if (answerBox.classList.contains('visible')) return;
+        answerBox.classList.add('visible');
+        revealBtn.disabled = true;
+      });
+
+      options.forEach(option => {
+        option.addEventListener('click', () => {
+          if (option.classList.contains('disabled')) return;
+
+          const correct = option.dataset.correct === 'true';
+          options.forEach(opt => opt.classList.add('disabled'));
+          option.classList.add(correct ? 'correct' : 'wrong');
+
+          feedback.textContent = correct
+            ? '🎉 Correct! Nice work.'
+            : '❌ Not quite. Try again or press "Show Answer" to learn more.';
+          feedback.classList.remove('correct', 'wrong');
+          feedback.classList.add(correct ? 'correct' : 'wrong');
+          feedback.style.display = 'block';
+
+          revealBtn.disabled = false;
+        });
+      });
+    });
+  });
 </script>
 
 </body>
