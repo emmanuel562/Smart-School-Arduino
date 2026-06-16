@@ -904,8 +904,12 @@
           if (option.classList.contains('disabled')) return;
 
           const correct = option.dataset.correct === 'true';
-          options.forEach(opt => opt.classList.add('disabled'));
-          option.classList.add(correct ? 'correct' : 'wrong');
+          if (correct) {
+            options.forEach(opt => opt.classList.add('disabled'));
+            option.classList.add('correct');
+          } else {
+            option.classList.add('wrong', 'disabled');
+          }
 
           feedback.textContent = correct
             ? '🎉 Correct! Nice work.'
