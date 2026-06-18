@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Smart School</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+.page-banner {
+  background: var(--ink);
+  padding: 80px 24px 64px;
+  text-align: center;
+}
+.page-banner .eyebrow { justify-content: center; color: var(--teal); }
+.page-banner .eyebrow::before { background: var(--teal); }
+.page-banner h1 { font-family: var(--font-display); font-size: clamp(28px,5vw,48px); font-weight:700; color: var(--white); letter-spacing: -1px; margin-top: 10px; }
+.page-banner p { color: rgba(255,255,255,0.5); font-size: 17px; max-width: 480px; margin: 16px auto 0; line-height: 1.7; }
+
+.about-body { max-width: var(--max-w); margin: 0 auto; padding: 72px 24px 80px; }
+
+.mission-block {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: 48px;
+  margin-bottom: 56px;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.mission-block::before {
+  content: '"';
+  position: absolute;
+  top: -20px; left: 32px;
+  font-family: Georgia, serif;
+  font-size: 200px;
+  color: var(--teal);
+  opacity: 0.06;
+  line-height: 1;
+  pointer-events: none;
+}
+.mission-block blockquote {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.4;
+  letter-spacing: -0.3px;
+  position: relative;
+}
+.mission-block blockquote span { color: var(--teal-dark); }
+.mission-block p { margin-top: 20px; font-size: 16px; color: var(--muted); line-height: 1.7; }
+
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 56px; }
+.about-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+}
+.about-card .ac-icon { font-size: 28px; margin-bottom: 14px; }
+.about-card h3 { font-family: var(--font-display); font-size: 17px; font-weight: 700; margin-bottom: 8px; color: var(--ink); }
+.about-card p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+.team-section { margin-bottom: 56px; }
+.team-section h2 { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--ink); margin-bottom: 24px; letter-spacing: -0.3px; }
+.team-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.team-avatar {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--teal), var(--copper));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+.team-info h3 { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+.team-info .role { font-size: 13px; color: var(--teal-dark); font-weight: 600; margin-bottom: 8px; }
+.team-info p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+.axora-block {
+  background: var(--ink);
+  border-radius: var(--radius-xl);
+  padding: 40px 48px;
+  color: rgba(255,255,255,0.6);
+}
+.axora-block h3 { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+.axora-block h3 span { color: var(--teal); }
+.axora-block p { font-size: 15px; line-height: 1.7; max-width: 540px; }
+.axora-tagline { margin-top: 16px; font-family: var(--font-display); font-size: 13px; color: rgba(255,255,255,0.3); letter-spacing: 1px; }
+
+.programme-timeline { margin-bottom: 56px; }
+.programme-timeline h2 { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--ink); margin-bottom: 28px; letter-spacing: -0.3px; }
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.tl-item {
+  display: flex;
+  gap: 20px;
+  padding-bottom: 28px;
+  position: relative;
+}
+.tl-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 19px; top: 40px;
+  width: 2px;
+  bottom: 0;
+  background: var(--border);
+}
+.tl-dot {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.tl-dot.done { border-color: var(--teal); background: rgba(0,196,154,0.08); }
+.tl-body { padding-top: 8px; }
+.tl-body h4 { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.tl-body p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+@media(max-width:640px) {
+  .about-grid { grid-template-columns:1fr; }
+  .mission-block { padding: 32px 24px; }
+  .axora-block { padding: 28px 24px; }
+  .team-card { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+<div class="nav-mobile" id="mobile-nav-placeholder"></div>
+
+<div class="page-body">
+
+  <div class="page-banner">
+    <div class="eyebrow">About Smart School</div>
+    <h1>Why we built this programme</h1>
+    <p>Engineering doesn't have to wait until university. It starts here, in a classroom, with a small blue board and a big question: what can you make?</p>
+  </div>
+
+  <!-- Circuit trace -->
+  <div class="circuit-trace">
+    <div class="circuit-trace-line"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+  </div>
+
+  <div class="about-body">
+
+    <!-- MISSION -->
+    <div class="mission-block reveal">
+      <blockquote>
+        Smart School exists to give Nigerian students <span>their first experience of engineering</span> — not reading about it, but actually doing it.
+      </blockquote>
+      <p>Too many students graduate without ever building anything. They know the theory, but they've never felt the moment when code they wrote makes a physical object move. That moment changes how you see yourself. Smart School is built around that moment.</p>
+    </div>
+
+    <!-- ABOUT GRID -->
+    <div class="about-grid">
+      <div class="about-card reveal">
+        <div class="ac-icon">🎯</div>
+        <h3>What Smart School Is</h3>
+        <p>A 5-session government robotics education initiative for primary and junior secondary school students. Each session is 2 hours. By the end, students program a real robot.</p>
+      </div>
+      <div class="about-card reveal reveal-delay-1">
+        <div class="ac-icon">👥</div>
+        <h3>Who It's For</h3>
+        <p>Primary 3 to JSS 2 students — ages 8 to 14. No prior knowledge of electronics or programming required. Zero experience is the starting point, not a barrier.</p>
+      </div>
+      <div class="about-card reveal reveal-delay-2">
+        <div class="ac-icon">📍</div>
+        <h3>Where It Happens</h3>
+        <p>In-person sessions at participating schools and learning centres across Nigeria, facilitated by trained student engineers from universities like FUTA.</p>
+      </div>
+      <div class="about-card reveal reveal-delay-3">
+        <div class="ac-icon">🏆</div>
+        <h3>What Students Leave With</h3>
+        <p>A working robot they programmed themselves, a foundational understanding of C++, and — most importantly — the belief that they can build things.</p>
+      </div>
+    </div>
+
+    <!-- PROGRAMME TIMELINE -->
+    <div class="programme-timeline trace-dot-marker reveal">
+      <h2>The 5-Session Journey</h2>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot done">✓</div>
+          <div class="tl-body">
+            <h4>Session 1 — Introduction to Arduino</h4>
+            <p>The Input → Processing → Output model. Board anatomy. First C++ program. Making an LED blink.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot done">✓</div>
+          <div class="tl-body">
+            <h4>Session 2 — Outputs & Actuators</h4>
+            <p>External LED, buzzer, servo motor, RGB LED. Digital vs analog. The Servo library. Colour mixing.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">3</div>
+          <div class="tl-body">
+            <h4>Session 3 — Sensors & Inputs</h4>
+            <p>Ultrasonic sensor, IR sensor, buttons. Reading the world. Combining sensors with outputs.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">4</div>
+          <div class="tl-body">
+            <h4>Session 4 — Combining Inputs & Outputs</h4>
+            <p>If-else logic. Reactive systems. Motor control. Making the robot respond to the environment.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="border-color:var(--copper);background:rgba(212,132,90,0.08);">🤖</div>
+          <div class="tl-body">
+            <h4>Session 5 — Project Day</h4>
+            <p>Students design, build, and demo their own project using the Elegoo Smart Car. Fully student-led.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEAM -->
+    <div class="team-section trace-dot-marker reveal">
+      <h2>Who Facilitates</h2>
+      <div class="team-card">
+        <div class="team-avatar">M</div>
+        <div class="team-info">
+          <h3>Emmanuel (General Manu)</h3>
+          <div class="role">Lead Facilitator · Mechatronics Engineering, FUTA · Founder, Axora Labs</div>
+          <p>Emmanuel leads Session 1 and oversees the full curriculum design. A second-year Mechatronics Engineering student at the Federal University of Technology Akure, he built Axora Labs to bridge the gap between theory and practice for Nigerian engineering students. Smart School is that mission applied to the youngest engineers in the room.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- AXORA -->
+    <div class="axora-block reveal">
+      <h3><span>Axora Labs</span> — the organisation behind Smart School</h3>
+      <p>Axora Labs is a student-led engineering and innovation organisation co-founded at FUTA. Its mission is to empower African engineers to build — through workshops, skill development programmes, and community. Smart School is the outreach arm of that mission, taking engineering education to younger students who've never had access to it.</p>
+      <p class="axora-tagline">connecting minds. engineering the future.</p>
+    </div>
+
+  </div>
+
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="js/main.js"></script>
+<script>
+  document.getElementById('nav-placeholder').outerHTML = renderNav('dark');
+  document.getElementById('footer-placeholder').outerHTML = renderFooter();
+</script>
+</body>
+</html>

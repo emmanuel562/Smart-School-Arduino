@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glossary — Smart School</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+.page-banner {
+  background: var(--ink);
+  padding: 80px 24px 64px;
+  text-align: center;
+}
+.page-banner .eyebrow { justify-content: center; color: var(--teal); }
+.page-banner .eyebrow::before { background: var(--teal); }
+.page-banner h1 { font-family: var(--font-display); font-size: clamp(28px,5vw,48px); font-weight:700; color: var(--white); letter-spacing:-1px; margin-top:10px; }
+.page-banner p { color: rgba(255,255,255,0.5); font-size: 17px; max-width: 480px; margin: 16px auto 0; line-height:1.7; }
+
+.glossary-body { max-width: var(--max-w); margin: 0 auto; padding: 56px 24px 80px; }
+
+/* Search */
+.glossary-search-wrap {
+  position: relative;
+  margin-bottom: 48px;
+}
+.glossary-search-wrap .search-icon {
+  position: absolute;
+  left: 16px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: var(--muted);
+  pointer-events: none;
+}
+#glossary-search {
+  width: 100%;
+  padding: 14px 20px 14px 44px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  border: 1.5px solid var(--border);
+  border-radius: 40px;
+  background: var(--white);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+#glossary-search:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(0,196,154,0.1); }
+#glossary-search::placeholder { color: var(--muted-lt); }
+
+/* Letter groups */
+.glossary-letter-group { margin-bottom: 40px; }
+.glossary-letter {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--teal);
+  margin-bottom: 4px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--teal);
+  display: inline-block;
+  min-width: 36px;
+  text-align: center;
+  line-height: 1;
+}
+
+/* Term */
+.glossary-term {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 24px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: baseline;
+}
+.glossary-term:last-child { border-bottom: none; }
+.term-left { }
+.term-word {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.term-session {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--copper-lt);
+  color: var(--copper);
+  border: 1px solid rgba(212,132,90,0.2);
+}
+.term-right { }
+.term-def {
+  font-size: 15px;
+  color: var(--ink3);
+  line-height: 1.65;
+}
+.term-example {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+  line-height: 1.5;
+}
+.term-code {
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--teal-dark);
+  background: rgba(0,196,154,0.06);
+  padding: 4px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+@media(max-width:600px){
+  .glossary-term { grid-template-columns: 1fr; gap: 6px; }
+}
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+<div class="nav-mobile" id="mobile-nav-placeholder"></div>
+
+<div class="page-body">
+  <div class="page-banner">
+    <div class="eyebrow">Glossary</div>
+    <h1>Words every engineer knows</h1>
+    <p>Every term you've encountered in class — defined clearly, with examples. This list grows after every session.</p>
+  </div>
+
+  <div class="circuit-trace">
+    <div class="circuit-trace-line"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+  </div>
+
+  <div class="glossary-body">
+
+    <div class="glossary-search-wrap reveal">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="glossary-search" placeholder="Search a term — e.g. 'analog', 'servo', 'PWM'…">
+    </div>
+
+    <!-- A -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">A</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Actuator</div>
+          <div class="term-session">Session 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">Any device that takes electricity from the Arduino and converts it into something physical — light, sound, or movement.</div>
+          <div class="term-example">Examples: LED (light), buzzer (sound), servo motor (movement), DC motor (wheels spinning).</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Analog</div>
+          <div class="term-session">Session 1 & 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A signal or pin that can hold any value within a range — not just ON or OFF. On the Arduino, analog output values go from 0 to 255, and analog input values go from 0 to 1023.</div>
+          <div class="term-example">Like a dimmer switch — you control exactly how much light comes out, not just on or off.</div>
+          <div class="term-code">analogWrite(pin, 128) // half power</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">analogWrite()</div>
+          <div class="term-session">Session 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A function that sends a PWM signal to a pin — controlling the power level from 0 (off) to 255 (full power). Only works on PWM pins marked with ~ on the board.</div>
+          <div class="term-code">analogWrite(9, 200) // 78% power on pin 9</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Arduino</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">An open-source electronics platform consisting of a microcontroller board and a programming environment. The processing unit in our Input → Processing → Output model.</div>
+          <div class="term-example">The Arduino Uno R3 is the specific board we use in this programme.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">B</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Breadboard</div>
+          <div class="term-session">Session 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A reusable board for building circuits without soldering. Components and wires push into holes that are connected in rows underneath. The two outer rails (marked + and –) are for power and ground.</div>
+          <div class="term-example">Think of it as a temporary construction site for your circuit.</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Buzzer (Piezo)</div>
+          <div class="term-session">Session 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">An output device that converts electricity into sound by vibrating a small disc rapidly. The frequency of vibration determines the pitch — higher frequency means higher pitch.</div>
+          <div class="term-code">tone(8, 440) // play A4 note (440 Hz)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- C -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">C</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">C++</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">The programming language used to write Arduino code. One of the most widely used languages in the world — used in game engines, operating systems, robotics, and embedded systems.</div>
+          <div class="term-example">The code you write in the Arduino IDE is C++ with some Arduino-specific additions.</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Comment</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A line of code that the Arduino ignores completely. Used to explain what your code does for anyone reading it — including future you.</div>
+          <div class="term-code">// This is a comment — the board skips this line</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- D -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">D</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">delay()</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A function that pauses the program for a set number of milliseconds. 1000 milliseconds = 1 second. The board does absolutely nothing during a delay.</div>
+          <div class="term-code">delay(500) // wait half a second</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Digital</div>
+          <div class="term-session">Session 1 & 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A signal or pin that has exactly two possible states: HIGH (on, 1) or LOW (off, 0). Nothing in between. Like a light switch — fully on or fully off.</div>
+          <div class="term-example">Digital pins on the Arduino Uno: 0 through 13.</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">digitalWrite()</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A function that sets a digital pin to HIGH (send electricity out) or LOW (stop electricity). Used to turn LEDs, buzzers, and other digital outputs on or off.</div>
+          <div class="term-code">digitalWrite(13, HIGH) // turn pin 13 ON</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- F -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">F</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Frequency</div>
+          <div class="term-session">Session 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">The number of vibrations per second, measured in Hertz (Hz). For a buzzer, frequency controls pitch — the higher the number, the higher the sound. Middle C on a piano is 262 Hz.</div>
+          <div class="term-example">262 Hz = C4 · 440 Hz = A4 · 4000 Hz = very sharp high beep</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Function</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A named, reusable block of code that performs a specific job. You call a function by writing its name followed by parentheses. The Arduino IDE requires two functions in every sketch: setup() and loop().</div>
+          <div class="term-code">digitalWrite(pin, HIGH) // calling the digitalWrite function</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- G -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">G</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">GND (Ground)</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">The reference point for all voltage measurements in a circuit — the return path for electricity. Every component needs a path back to GND for current to flow. Think of it as the negative terminal of a battery.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- H -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">H</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">HIGH</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A constant that represents the "on" state for a digital pin — 5V on the Arduino Uno. When you write digitalWrite(pin, HIGH), the pin sends out 5 volts of electricity.</div>
+          <div class="term-example">HIGH = 1 = ON = 5V</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- I -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">I</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">#include</div>
+          <div class="term-session">Session 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A directive at the top of your code that tells the Arduino to load a library before compiling. It gives your sketch access to extra functions someone else already wrote.</div>
+          <div class="term-code">#include &lt;Servo.h&gt; // load the Servo library</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Input</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">The first step in the Input → Processing → Output model. Inputs collect information from the environment and send it to the Arduino. Sensors, buttons, and microphones are all inputs.</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">int</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">Short for "integer" — a data type for whole numbers (no decimals). Used to declare variables that store whole number values like pin numbers, delay times, or brightness levels.</div>
+          <div class="term-code">int ledPin = 7; // ledPin holds the value 7</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- L -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">L</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">LED</div>
+          <div class="term-session">Session 1 & 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">Light Emitting Diode. A component that converts electricity into light. Has two legs — the longer leg (anode, +) connects to power, the shorter leg (cathode, –) connects to GND. Always needs a resistor to limit current.</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Library</div>
+          <div class="term-session">Session 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A collection of pre-written code that adds extra functions to your sketch. Instead of writing all the servo control code yourself, you import the Servo library and use its ready-made functions.</div>
+          <div class="term-example">Engineers always build on top of what others have already made. Libraries are how that happens.</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">loop()</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">One of the two required functions in every Arduino sketch. Everything inside loop() runs continuously, over and over, for as long as the board has power. Your main program behaviour goes here.</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">LOW</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A constant that represents the "off" state for a digital pin — 0V. When you write digitalWrite(pin, LOW), the pin stops sending electricity.</div>
+          <div class="term-example">LOW = 0 = OFF = 0V</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- M -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">M</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Microcontroller</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A small computer on a single chip that contains a processor, memory, and input/output pins. The brain of the Arduino board — it stores and runs your code.</div>
+          <div class="term-example">The large black rectangular chip in the middle of the Arduino Uno board is the ATmega328P microcontroller.</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Motor</div>
+          <div class="term-session">Session 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A device that converts electrical energy into rotational movement. DC motors spin continuously (used in wheels). Servo motors rotate to a precise angle (used in robot arms). Stepper motors move in precise steps (used in 3D printers).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- N -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">N</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">noTone()</div>
+          <div class="term-session">Session 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A function that stops any sound playing through a buzzer on a specified pin.</div>
+          <div class="term-code">noTone(8) // stop buzzer on pin 8</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- O -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">O</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Output</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">The third step in the Input → Processing → Output model. Outputs are what the Arduino does after processing — something physical you can see, hear, or feel. LEDs, buzzers, servos, and screens are all outputs.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- P -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">P</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Pin</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A connection point on the Arduino board where you attach components using wires. Pins can be digital (HIGH/LOW), analog (0–1023 range), or power supply (5V, 3.3V, GND).</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">pinMode()</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A function used in setup() to declare whether a pin will be used as an INPUT (receiving data) or OUTPUT (sending data). You must call this before using the pin.</div>
+          <div class="term-code">pinMode(7, OUTPUT) // pin 7 will send electricity out</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Processing</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">The middle step in the Input → Processing → Output model — where the Arduino board reads your code and decides what to do with incoming information. The Arduino board itself is the processing unit.</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">PWM</div>
+          <div class="term-session">Session 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">Pulse Width Modulation. A technique for simulating analog output using a digital pin — by switching the pin on and off very rapidly, the average power is controlled. This is how analogWrite() works on the Arduino. PWM pins are marked with ~ on the board.</div>
+          <div class="term-example">PWM pins on the Uno: 3, 5, 6, 9, 10, 11</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- R -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">R</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Resistor</div>
+          <div class="term-session">Session 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A component that limits the flow of electrical current. Used with LEDs to protect them from receiving too much current and burning out. Resistance is measured in Ohms (Ω). We use 220Ω resistors with LEDs in this programme.</div>
+          <div class="term-example">A resistor is like a narrow section in a pipe — it slows down the flow.</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">RGB LED</div>
+          <div class="term-session">Session 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A single LED component that contains three separate LEDs — Red, Green, and Blue. By controlling the brightness of each (0–255 using analogWrite), you can produce any of 16 million possible colours.</div>
+          <div class="term-code">analogWrite(9, 255) // full red</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">S</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Sensor</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A device that detects something in the physical environment and converts it to an electrical signal. Sensors are inputs — they feed information to the Arduino for processing.</div>
+          <div class="term-example">Sound sensor (detects noise), light sensor (detects brightness), motion sensor (detects movement), temperature sensor (detects heat).</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Servo Motor</div>
+          <div class="term-session">Session 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A motor you control by angle rather than speed. You command it to go to a specific position between 0° and 180°, and it holds that position. Used in robot arms, steering systems, and door mechanisms.</div>
+          <div class="term-code">myServo.write(90) // move to 90 degrees</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">setup()</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">One of the two required functions in every Arduino sketch. Code inside setup() runs exactly once — when the board powers on or resets. Use it to declare pin modes and start serial communication.</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Sketch</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">The Arduino word for a program. When you write code in the Arduino IDE and save it, that file is called a sketch. Every sketch must have both a setup() and a loop() function.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- T -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">T</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">tone()</div>
+          <div class="term-session">Session 2</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A function that generates a square wave at a given frequency on a pin, causing a piezo buzzer to produce sound. The sound continues until noTone() is called or a duration is specified.</div>
+          <div class="term-code">tone(8, 440, 500) // play A4 for 500ms on pin 8</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- V -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">V</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Variable</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A named storage location that holds a value you can use and change throughout your program. Declaring a variable at the top makes your code easier to read and modify — change the value once, it updates everywhere it's used.</div>
+          <div class="term-code">int delayTime = 1000; // change this one number to change speed everywhere</div>
+        </div>
+      </div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">void</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A keyword placed before a function definition that means "this function doesn't return a value — it just does something." Both setup() and loop() are void functions. Don't worry too much about this — just know it's required.</div>
+          <div class="term-code">void loop() { // "this function does stuff but gives nothing back" }</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- W -->
+    <div class="glossary-letter-group reveal">
+      <div class="glossary-letter">W</div>
+
+      <div class="glossary-term">
+        <div class="term-left">
+          <div class="term-word">Wokwi</div>
+          <div class="term-session">Session 1</div>
+        </div>
+        <div class="term-right">
+          <div class="term-def">A free, browser-based Arduino simulator at wokwi.com. Build virtual circuits and test code without any physical hardware. Useful for practising between sessions or when you don't have access to a board.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="js/main.js"></script>
+<script>
+  document.getElementById('nav-placeholder').outerHTML = renderNav('dark');
+  document.getElementById('footer-placeholder').outerHTML = renderFooter();
+</script>
+</body>
+</html>

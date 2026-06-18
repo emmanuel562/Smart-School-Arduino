@@ -4,904 +4,715 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Smart School — Robotics Programme</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
 <style>
-/* ── TOKENS ── */
-:root {
-  --navy:   #0B1120;
-  --navy2:  #111827;
-  --navy3:  #1C2A3A;
-  --teal:   #00D4AA;
-  --teal2:  #00B38F;
-  --yellow: #FFD166;
-  --coral:  #FF6B6B;
-  --purple: #A78BFA;
-  --white:  #F0F8FF;
-  --muted:  #8BA0B8;
-  --card:   #141F30;
-  --radius: 20px;
-  --shadow: 0 8px 32px rgba(0,0,0,0.35);
-}
-
-/* ── RESET ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--navy);
-  color: var(--white);
-  overflow-x: hidden;
-  line-height: 1.6;
-}
-a { text-decoration: none; color: inherit; }
-img { max-width: 100%; }
-
-/* ── NAV ── */
-nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  padding: 0 5%;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(11,17,32,0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0,212,170,0.1);
-}
-.nav-logo {
-  font-family: 'Fredoka One', sans-serif;
-  font-size: 22px;
-  color: var(--teal);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.nav-logo span { color: var(--white); }
-.nav-links {
-  display: flex;
-  gap: 32px;
-  list-style: none;
-}
-.nav-links a {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--muted);
-  transition: color .2s;
-}
-.nav-links a:hover { color: var(--teal); }
-.nav-btn {
-  background: var(--teal);
-  color: var(--navy);
-  font-weight: 700;
-  font-size: 13px;
-  padding: 8px 20px;
-  border-radius: 40px;
-  transition: background .2s, transform .15s;
-}
-.nav-btn:hover { background: var(--teal2); transform: translateY(-1px); }
-
-/* ── HERO ── */
+/* ── INDEX-SPECIFIC STYLES ── */
 .hero {
   min-height: 100vh;
+  background: var(--ink);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 100px 5% 80px;
+  padding: 120px 24px 80px;
   position: relative;
   overflow: hidden;
 }
+.hero-glow {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 500px;
+  background: radial-gradient(ellipse at center top, rgba(0,196,154,0.14), transparent 70%);
+  pointer-events: none;
+}
+.hero-glow-copper {
+  position: absolute;
+  bottom: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(ellipse, rgba(212,132,90,0.08), transparent 70%);
+  pointer-events: none;
+}
 
-/* Circuit SVG background */
-.hero-bg {
+/* Circuit SVG */
+.hero-circuit {
   position: absolute;
   inset: 0;
-  z-index: 0;
-  opacity: 0.07;
-}
-
-/* Floating emoji orbs */
-.orb {
-  position: absolute;
-  font-size: 36px;
-  animation: float linear infinite;
+  opacity: 0.06;
   pointer-events: none;
-  z-index: 1;
-  opacity: 0.5;
-  filter: blur(0.5px);
-}
-@keyframes float {
-  0%   { transform: translateY(0px) rotate(0deg); }
-  50%  { transform: translateY(-22px) rotate(8deg); }
-  100% { transform: translateY(0px) rotate(0deg); }
 }
 
-/* Teal glow blob */
-.hero::before {
-  content: '';
+/* Floating particles */
+.particle {
   position: absolute;
-  top: 10%; left: 50%;
-  transform: translateX(-50%);
-  width: 700px; height: 400px;
-  background: radial-gradient(ellipse, rgba(0,212,170,0.12) 0%, transparent 70%);
+  font-size: 20px;
+  opacity: 0.3;
+  animation: drift linear infinite;
   pointer-events: none;
-  z-index: 0;
+}
+@keyframes drift {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+  50%  { opacity: 0.5; }
+  100% { transform: translateY(-30px) rotate(10deg); opacity: 0.3; }
 }
 
-.hero-inner {
-  position: relative;
-  z-index: 2;
-  max-width: 760px;
-}
+.hero-inner { position: relative; z-index: 2; max-width: 700px; }
+
 .hero-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(0,212,170,0.12);
-  border: 1px solid rgba(0,212,170,0.3);
+  background: rgba(0,196,154,0.1);
+  border: 1px solid rgba(0,196,154,0.25);
   color: var(--teal);
-  font-size: 13px;
+  font-family: var(--font-display);
+  font-size: 12px;
   font-weight: 600;
-  padding: 6px 18px;
+  padding: 6px 16px;
   border-radius: 40px;
-  margin-bottom: 28px;
+  margin-bottom: 32px;
   letter-spacing: 0.5px;
 }
-.hero-badge .dot {
+.hero-badge .pulse {
   width: 7px; height: 7px;
   background: var(--teal);
   border-radius: 50%;
-  animation: pulse 1.8s ease-in-out infinite;
+  animation: pulse 2s ease-in-out infinite;
 }
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.4; transform: scale(0.7); }
-}
-.hero h1 {
-  font-family: 'Fredoka One', sans-serif;
-  font-size: clamp(44px, 8vw, 82px);
-  line-height: 1.05;
-  margin-bottom: 24px;
-  color: var(--white);
-}
-.hero h1 .teal  { color: var(--teal); }
-.hero h1 .yellow{ color: var(--yellow); }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.6)} }
 
-/* Typewriter cursor */
-.cursor {
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 8vw, 76px);
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 1.05;
+  color: var(--white);
+  margin-bottom: 24px;
+}
+.hero h1 .teal   { color: var(--teal); }
+.hero h1 .copper { color: var(--copper); }
+.hero h1 .cursor {
   display: inline-block;
-  width: 4px;
-  height: 0.85em;
+  width: 3px;
+  height: 0.8em;
   background: var(--teal);
   vertical-align: middle;
-  margin-left: 3px;
+  margin-left: 2px;
   border-radius: 2px;
-  animation: blink 0.85s step-end infinite;
+  animation: blink 0.9s step-end infinite;
 }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
 .hero p {
-  font-size: clamp(16px, 2.5vw, 20px);
-  color: var(--muted);
-  max-width: 540px;
+  font-size: clamp(16px, 2.5vw, 19px);
+  color: rgba(255,255,255,0.55);
+  line-height: 1.75;
+  max-width: 500px;
   margin: 0 auto 40px;
-  line-height: 1.7;
 }
+
 .hero-cta {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   justify-content: center;
   flex-wrap: wrap;
 }
-.btn-primary {
-  background: var(--teal);
-  color: var(--navy);
-  font-weight: 700;
-  font-size: 16px;
-  padding: 14px 32px;
-  border-radius: 40px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: transform .2s, box-shadow .2s;
-  box-shadow: 0 4px 20px rgba(0,212,170,0.35);
-}
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,212,170,0.45); }
-.btn-secondary {
-  background: transparent;
-  color: var(--white);
-  font-weight: 600;
-  font-size: 16px;
-  padding: 14px 32px;
-  border-radius: 40px;
-  border: 1.5px solid rgba(255,255,255,0.2);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: border-color .2s, background .2s;
-}
-.btn-secondary:hover { border-color: var(--teal); background: rgba(0,212,170,0.07); }
 
-/* Hero stats */
+/* Stats row */
 .hero-stats {
   display: flex;
   justify-content: center;
-  gap: 48px;
-  margin-top: 60px;
+  gap: 0;
+  margin-top: 72px;
   padding-top: 48px;
-  border-top: 1px solid rgba(255,255,255,0.07);
-  flex-wrap: wrap;
+  border-top: 1px solid rgba(255,255,255,0.06);
 }
-.stat-item { text-align: center; }
+.stat-item {
+  text-align: center;
+  padding: 0 36px;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.stat-item:last-child { border-right: none; }
 .stat-num {
-  font-family: 'Fredoka One', sans-serif;
-  font-size: 36px;
-  color: var(--teal);
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--white);
   display: block;
   line-height: 1;
+  letter-spacing: -1px;
 }
-.stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.stat-num .accent { color: var(--teal); }
+.stat-label { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 6px; }
 
-/* ── SECTION WRAPPER ── */
-section {
-  padding: 96px 5%;
+/* ── MODEL SECTION ── */
+.model-section {
+  background: var(--surface);
+  padding: 96px 24px;
 }
-.section-eyebrow {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--teal);
-  margin-bottom: 12px;
-}
-.section-title {
-  font-family: 'Fredoka One', sans-serif;
-  font-size: clamp(30px, 5vw, 48px);
-  line-height: 1.15;
-  margin-bottom: 16px;
-}
-.section-sub {
-  font-size: 17px;
-  color: var(--muted);
-  max-width: 520px;
-  line-height: 1.7;
-}
-.centered { text-align: center; }
-.centered .section-sub { margin: 0 auto; }
-
-/* ── WHAT YOU LEARN ── */
-.learn-section { background: var(--navy2); }
-.learn-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 20px;
-  margin-top: 56px;
-}
-.learn-card {
-  background: var(--card);
-  border-radius: var(--radius);
-  padding: 28px 24px;
-  border: 1px solid rgba(255,255,255,0.05);
-  transition: transform .2s, border-color .2s;
-}
-.learn-card:hover { transform: translateY(-4px); border-color: rgba(0,212,170,0.25); }
-.learn-icon {
-  font-size: 36px;
-  margin-bottom: 16px;
-  display: block;
-}
-.learn-card h3 {
-  font-family: 'Fredoka One', sans-serif;
-  font-size: 20px;
-  margin-bottom: 8px;
-  color: var(--white);
-}
-.learn-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
-
-/* ── MODEL STRIP ── */
-.model-strip {
-  background: linear-gradient(135deg, #0D1B2E, #0B2020);
-  border-top: 1px solid rgba(0,212,170,0.1);
-  border-bottom: 1px solid rgba(0,212,170,0.1);
-  padding: 64px 5%;
-}
-.model-strip .section-title { margin-bottom: 48px; }
+.model-section .inner { max-width: var(--max-w); margin: 0 auto; }
 .model-flow {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
   gap: 0;
-  flex-wrap: wrap;
-  max-width: 820px;
-  margin: 0 auto;
+  margin-top: 52px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
 }
 .model-node {
   flex: 1;
-  min-width: 180px;
-  background: var(--card);
-  border-radius: 16px;
-  padding: 28px 20px;
-  text-align: center;
-  border: 2px solid;
-  transition: transform .2s;
-}
-.model-node:hover { transform: scale(1.03); }
-.model-node .n-icon { font-size: 40px; margin-bottom: 12px; display: block; }
-.model-node h3 {
-  font-family: 'Fredoka One', sans-serif;
-  font-size: 22px;
-  margin-bottom: 8px;
-}
-.model-node p { font-size: 13px; color: var(--muted); }
-.node-input   { border-color: #60A5FA; }
-.node-input h3 { color: #60A5FA; }
-.node-process { border-color: var(--yellow); }
-.node-process h3 { color: var(--yellow); }
-.node-output  { border-color: var(--coral); }
-.node-output h3 { color: var(--coral); }
-.model-arrow {
-  font-size: 32px;
-  color: var(--muted);
-  padding: 0 12px;
-  flex-shrink: 0;
-  font-weight: 700;
-}
-
-/* ── SESSIONS ── */
-.sessions-section { background: var(--navy); }
-.sessions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-  margin-top: 56px;
-}
-.session-card {
-  background: var(--card);
-  border-radius: var(--radius);
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.06);
-  transition: transform .2s, box-shadow .2s;
+  padding: 36px 28px;
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
-.session-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
-.session-card.locked { opacity: 0.5; pointer-events: none; }
-.session-top {
-  padding: 28px 24px 20px;
-  position: relative;
-}
-.session-num {
-  font-family: 'Fredoka One', sans-serif;
-  font-size: 13px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 6px;
-}
-.session-title {
-  font-family: 'Fredoka One', sans-serif;
-  font-size: 22px;
-  color: var(--white);
-  margin-bottom: 10px;
-}
-.session-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
-.session-tag {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 20px;
-  margin-top: 14px;
-}
-.tag-live   { background: rgba(0,212,170,0.15); color: var(--teal); border: 1px solid rgba(0,212,170,0.3); }
-.tag-coming { background: rgba(255,255,255,0.06); color: var(--muted); border: 1px solid rgba(255,255,255,0.1); }
-.session-bottom {
-  margin-top: auto;
-  padding: 16px 24px;
-  border-top: 1px solid rgba(255,255,255,0.06);
+.model-node-input   { background: var(--ink); }
+.model-node-process { background: var(--ink2); }
+.model-node-output  { background: var(--ink3); }
+.model-arrow-col {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-}
-.session-link {
-  font-size: 14px;
-  font-weight: 600;
+  justify-content: center;
+  padding: 0 4px;
+  background: var(--ink2);
   color: var(--teal);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: gap .2s;
+  font-size: 20px;
+  font-weight: 700;
 }
-.session-link:hover { gap: 10px; }
-.session-pills { display: flex; gap: 6px; flex-wrap: wrap; }
-.pill {
+.model-node .n-emoji { font-size: 36px; }
+.model-node .n-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+.model-node .n-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--white);
+}
+.model-node-input .n-title   { color: #60A5FA; }
+.model-node-process .n-title { color: var(--yellow); }
+.model-node-output .n-title  { color: var(--copper); }
+.model-node .n-desc {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+}
+.model-node .n-examples {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.n-chip {
   font-size: 11px;
   background: rgba(255,255,255,0.07);
-  color: var(--muted);
+  color: rgba(255,255,255,0.5);
   padding: 3px 10px;
   border-radius: 20px;
 }
 
-/* Accent bar on session cards */
-.s1-bar { background: linear-gradient(90deg, var(--teal), #00B38F); height: 4px; }
-.s2-bar { background: linear-gradient(90deg, var(--yellow), #F0A500); height: 4px; }
-.s3-bar { background: linear-gradient(90deg, var(--coral), #C0392B); height: 4px; }
-.s4-bar { background: linear-gradient(90deg, var(--purple), #7C3AED); height: 4px; }
-.s5-bar { background: linear-gradient(90deg, #34D399, #059669); height: 4px; }
-
-/* ── TOOLS ── */
-.tools-section { background: var(--navy2); }
-.tools-row {
-  display: flex;
+/* ── LEARN SECTION ── */
+.learn-section { background: var(--surface2); padding: 96px 24px; }
+.learn-section .inner { max-width: var(--max-w); margin: 0 auto; }
+.learn-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  margin-top: 48px;
-  flex-wrap: wrap;
+  margin-top: 52px;
 }
-.tool-chip {
-  background: var(--card);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 14px;
-  padding: 18px 22px;
+.learn-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  border: 1px solid var(--border);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.learn-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: rgba(0,196,154,0.25); }
+.learn-card .lc-icon {
+  font-size: 32px;
+  margin-bottom: 16px;
+  display: block;
+}
+.learn-card h3 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+.learn-card p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+/* ── SESSIONS SECTION ── */
+.sessions-section { background: var(--surface); padding: 96px 24px; }
+.sessions-section .inner { max-width: var(--max-w); margin: 0 auto; }
+.sessions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 52px;
+}
+.session-row {
+  background: var(--white);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 20px 24px;
   display: flex;
   align-items: center;
-  gap: 14px;
-  flex: 1;
-  min-width: 200px;
-  transition: border-color .2s;
+  gap: 20px;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
-.tool-chip:hover { border-color: rgba(0,212,170,0.3); }
-.tool-icon { font-size: 28px; flex-shrink: 0; }
-.tool-info h4 { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
-.tool-info p  { font-size: 12px; color: var(--muted); }
+.session-row:hover { border-color: var(--teal); box-shadow: var(--shadow); transform: translateX(4px); }
+.session-row.locked { opacity: 0.5; pointer-events: none; }
+.session-num-badge {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--copper);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.session-row.locked .session-num-badge { background: var(--surface3); color: var(--muted); }
+.session-row-body { flex: 1; }
+.session-row-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+.session-row-desc { font-size: 13px; color: var(--muted); }
+.session-row-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.session-topics {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* ── TOOLS SECTION ── */
+.tools-section { background: var(--ink); padding: 80px 24px; }
+.tools-section .inner { max-width: var(--max-w); margin: 0 auto; }
+.tools-section .eyebrow { color: var(--teal); }
+.tools-section .eyebrow::before { background: var(--teal); }
+.tools-section .section-title { color: var(--white); }
+.tools-section .section-sub { color: rgba(255,255,255,0.5); }
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 48px;
+}
+.tool-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  gap: 18px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.tool-card:hover { border-color: rgba(0,196,154,0.3); background: rgba(0,196,154,0.04); }
+.tool-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+  width: 52px; height: 52px;
+  background: rgba(255,255,255,0.06);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+}
+.tool-info h4 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+.tool-info p { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+.tool-info a {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--teal);
+}
+.tool-info a:hover { color: var(--teal-dark); }
 
 /* ── CTA BANNER ── */
 .cta-banner {
-  background: linear-gradient(135deg, #00342A 0%, #0B1120 60%);
-  border-top: 1px solid rgba(0,212,170,0.15);
-  border-bottom: 1px solid rgba(0,212,170,0.15);
-  padding: 80px 5%;
+  background: linear-gradient(135deg, #00291E, #0D1117);
+  padding: 80px 24px;
   text-align: center;
+  border-top: 1px solid rgba(0,196,154,0.1);
 }
 .cta-banner h2 {
-  font-family: 'Fredoka One', sans-serif;
-  font-size: clamp(28px, 5vw, 46px);
-  margin-bottom: 16px;
+  font-family: var(--font-display);
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.5px;
+  margin-bottom: 12px;
 }
 .cta-banner h2 span { color: var(--teal); }
-.cta-banner p { color: var(--muted); font-size: 17px; max-width: 480px; margin: 0 auto 36px; }
+.cta-banner p { color: rgba(255,255,255,0.5); font-size: 16px; max-width: 420px; margin: 0 auto 32px; }
 
-/* ── FOOTER ── */
-footer {
-  background: var(--navy2);
-  border-top: 1px solid rgba(255,255,255,0.06);
-  padding: 48px 5% 32px;
-}
-.footer-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 32px;
-  flex-wrap: wrap;
-  margin-bottom: 40px;
-}
-.footer-brand .nav-logo { margin-bottom: 10px; }
-.footer-brand p { font-size: 13px; color: var(--muted); max-width: 260px; }
-.footer-links h4 { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 14px; letter-spacing: 0.5px; }
-.footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-.footer-links a { font-size: 14px; color: var(--muted); transition: color .2s; }
-.footer-links a:hover { color: var(--teal); }
-.footer-bottom {
-  border-top: 1px solid rgba(255,255,255,0.06);
-  padding-top: 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-.footer-bottom p { font-size: 13px; color: var(--muted); }
-.footer-bottom span { color: var(--teal); }
-
-/* ── SCROLL REVEAL ── */
-.reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.55s ease, transform 0.55s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* ── RESPONSIVE ── */
-@media (max-width: 640px) {
-  .nav-links { display: none; }
-  .hero-stats { gap: 28px; }
+/* responsive */
+@media (max-width: 768px) {
   .model-flow { flex-direction: column; }
-  .model-arrow { transform: rotate(90deg); }
-  .footer-inner { flex-direction: column; }
+  .model-arrow-col { transform: rotate(90deg); padding: 8px 0; }
+  .learn-grid { grid-template-columns: 1fr 1fr; }
+  .tools-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 0; flex-wrap: wrap; }
+  .stat-item { padding: 16px 20px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  *, .orb, .cursor { animation: none !important; transition: none !important; }
+@media (max-width: 480px) {
+  .learn-grid { grid-template-columns: 1fr; }
+  .session-topics { display: none; }
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">🤖 <span>Smart</span>School</div>
-  <ul class="nav-links">
-    <li><a href="#learn">What You'll Learn</a></li>
-    <li><a href="#sessions">Sessions</a></li>
-    <li><a href="#tools">Tools</a></li>
-  </ul>
-  <a href="#sessions" class="nav-btn">📚 Resources</a>
-</nav>
+<div id="nav-placeholder"></div>
+<div class="nav-mobile" id="mobile-nav-placeholder"></div>
 
-<!-- HERO -->
-<section class="hero">
-  <!-- Circuit board SVG background -->
-  <svg class="hero-bg" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <line x1="100" y1="200" x2="400" y2="200" stroke="#00D4AA" stroke-width="1.5"/>
-    <line x1="400" y1="200" x2="400" y2="350" stroke="#00D4AA" stroke-width="1.5"/>
-    <line x1="400" y1="350" x2="700" y2="350" stroke="#00D4AA" stroke-width="1.5"/>
-    <line x1="700" y1="350" x2="700" y2="150" stroke="#00D4AA" stroke-width="1.5"/>
-    <line x1="700" y1="150" x2="1000" y2="150" stroke="#00D4AA" stroke-width="1.5"/>
-    <line x1="200" y1="500" x2="550" y2="500" stroke="#00D4AA" stroke-width="1.5"/>
-    <line x1="550" y1="500" x2="550" y2="420" stroke="#00D4AA" stroke-width="1.5"/>
-    <line x1="550" y1="420" x2="850" y2="420" stroke="#00D4AA" stroke-width="1.5"/>
-    <line x1="850" y1="420" x2="850" y2="560" stroke="#00D4AA" stroke-width="1.5"/>
-    <line x1="850" y1="560" x2="1100" y2="560" stroke="#00D4AA" stroke-width="1.5"/>
-    <line x1="150" y1="100" x2="150" y2="600" stroke="#FFD166" stroke-width="1"/>
-    <line x1="900" y1="80" x2="900" y2="300" stroke="#FFD166" stroke-width="1"/>
-    <!-- dots at junctions -->
-    <circle cx="400" cy="200" r="5" fill="#00D4AA"/>
-    <circle cx="400" cy="350" r="5" fill="#00D4AA"/>
-    <circle cx="700" cy="350" r="5" fill="#00D4AA"/>
-    <circle cx="700" cy="150" r="5" fill="#00D4AA"/>
-    <circle cx="550" cy="500" r="5" fill="#00D4AA"/>
-    <circle cx="550" cy="420" r="5" fill="#00D4AA"/>
-    <circle cx="850" cy="420" r="5" fill="#00D4AA"/>
-    <circle cx="150" cy="200" r="4" fill="#FFD166"/>
-    <circle cx="150" cy="500" r="4" fill="#FFD166"/>
-    <circle cx="900" cy="150" r="4" fill="#FFD166"/>
-    <!-- small component boxes -->
-    <rect x="370" y="170" width="60" height="60" rx="4" stroke="#00D4AA" stroke-width="1.5" fill="none"/>
-    <rect x="670" y="120" width="60" height="60" rx="4" stroke="#00D4AA" stroke-width="1.5" fill="none"/>
-    <rect x="520" y="390" width="60" height="60" rx="4" stroke="#FFD166" stroke-width="1" fill="none"/>
-  </svg>
+<div class="page-body">
 
-  <!-- Floating orbs -->
-  <div class="orb" style="top:15%;left:8%;animation-duration:5s;animation-delay:0s;">🤖</div>
-  <div class="orb" style="top:25%;right:10%;animation-duration:6.5s;animation-delay:1s;">💡</div>
-  <div class="orb" style="bottom:22%;left:12%;animation-duration:7s;animation-delay:2s;">⚙️</div>
-  <div class="orb" style="bottom:30%;right:8%;animation-duration:5.5s;animation-delay:0.5s;">🔌</div>
-  <div class="orb" style="top:60%;left:5%;font-size:24px;animation-duration:8s;animation-delay:1.5s;">✨</div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-glow-copper"></div>
 
-  <div class="hero-inner">
-    <div class="hero-badge"><div class="dot"></div> Government Robotics Education Initiative</div>
-    <h1>
-      Learn to talk to<br>
-      <span class="teal" id="typewriter"></span><span class="cursor"></span>
-    </h1>
-    <p>You're not just a student anymore. You're a builder. In 5 sessions, you'll go from never touching a circuit board to programming your own robot.</p>
-    <div class="hero-cta">
-      <a href="#sessions" class="btn-primary">📚 Go to My Sessions →</a>
-      <a href="#learn" class="btn-secondary">What will I learn?</a>
-    </div>
+    <!-- Circuit lines SVG -->
+    <svg class="hero-circuit" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" fill="none">
+      <line x1="0" y1="200" x2="300" y2="200" stroke="#00C49A" stroke-width="1.5"/>
+      <line x1="300" y1="200" x2="300" y2="400" stroke="#00C49A" stroke-width="1.5"/>
+      <line x1="300" y1="400" x2="600" y2="400" stroke="#00C49A" stroke-width="1.5"/>
+      <line x1="600" y1="400" x2="600" y2="100" stroke="#00C49A" stroke-width="1.5"/>
+      <line x1="600" y1="100" x2="1000" y2="100" stroke="#00C49A" stroke-width="1.5"/>
+      <line x1="1000" y1="100" x2="1200" y2="100" stroke="#00C49A" stroke-width="1.5"/>
+      <line x1="150" y1="500" x2="450" y2="500" stroke="#D4845A" stroke-width="1"/>
+      <line x1="450" y1="500" x2="450" y2="600" stroke="#D4845A" stroke-width="1"/>
+      <line x1="450" y1="600" x2="900" y2="600" stroke="#D4845A" stroke-width="1"/>
+      <line x1="900" y1="300" x2="1200" y2="300" stroke="#D4845A" stroke-width="1"/>
+      <circle cx="300" cy="200" r="5" fill="#00C49A"/>
+      <circle cx="300" cy="400" r="5" fill="#00C49A"/>
+      <circle cx="600" cy="400" r="5" fill="#00C49A"/>
+      <circle cx="600" cy="100" r="5" fill="#00C49A"/>
+      <circle cx="1000" cy="100" r="5" fill="#00C49A"/>
+      <circle cx="450" cy="500" r="4" fill="#D4845A"/>
+      <circle cx="450" cy="600" r="4" fill="#D4845A"/>
+      <rect x="270" y="170" width="60" height="60" rx="4" stroke="#00C49A" stroke-width="1.5" fill="none"/>
+      <rect x="570" y="370" width="60" height="60" rx="4" stroke="#00C49A" stroke-width="1.5" fill="none"/>
+      <rect x="420" y="470" width="60" height="60" rx="4" stroke="#D4845A" stroke-width="1" fill="none"/>
+    </svg>
 
-    <div class="hero-stats">
-      <div class="stat-item">
-        <span class="stat-num">5</span>
-        <div class="stat-label">Sessions</div>
+    <!-- Floating particles -->
+    <div class="particle" style="top:15%;left:8%;animation-duration:5.5s;animation-delay:0s;">⚡</div>
+    <div class="particle" style="top:20%;right:10%;animation-duration:7s;animation-delay:1s;">🤖</div>
+    <div class="particle" style="bottom:25%;left:10%;animation-duration:6s;animation-delay:2s;">💡</div>
+    <div class="particle" style="bottom:20%;right:8%;animation-duration:8s;animation-delay:0.5s;">⚙️</div>
+
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <div class="pulse"></div>
+        Government Robotics Education Initiative
       </div>
-      <div class="stat-item">
-        <span class="stat-num">10</span>
-        <div class="stat-label">Hours of Learning</div>
+
+      <h1>
+        You're not just<br>a student.<br>
+        You're a <span class="teal" id="typewriter">builder</span><span class="cursor"></span>
+      </h1>
+
+      <p>In 5 sessions, you'll go from never touching a circuit board to programming your own robot. Real code. Real circuits. Real engineering.</p>
+
+      <div class="hero-cta">
+        <a href="session1.html" class="btn btn-primary">📚 Start Session 1 →</a>
+        <a href="about.html"    class="btn btn-secondary" style="color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.15);">Learn more</a>
       </div>
-      <div class="stat-item">
-        <span class="stat-num">1</span>
-        <div class="stat-label">Robot You'll Program</div>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num">∞</span>
-        <div class="stat-label">Things You Can Build</div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- WHAT YOU LEARN -->
-<section class="learn-section" id="learn">
-  <div class="centered reveal">
-    <div class="section-eyebrow">What You'll Learn</div>
-    <h2 class="section-title">From zero to builder 🚀</h2>
-    <p class="section-sub">No experience needed. We start from scratch and build up — step by step, session by session.</p>
-  </div>
-  <div class="learn-grid">
-    <div class="learn-card reveal">
-      <span class="learn-icon">🧠</span>
-      <h3>How Computers Think</h3>
-      <p>You'll understand the Input → Processing → Output model that every electronic device in the world uses.</p>
-    </div>
-    <div class="learn-card reveal">
-      <span class="learn-icon">🔌</span>
-      <h3>Electronics Basics</h3>
-      <p>Pins, circuits, power — you'll learn how to read a board and connect components without breaking anything.</p>
-    </div>
-    <div class="learn-card reveal">
-      <span class="learn-icon">💻</span>
-      <h3>Real Programming</h3>
-      <p>You'll write actual C++ code — the same language professionals use — to control LEDs, sensors, and motors.</p>
-    </div>
-    <div class="learn-card reveal">
-      <span class="learn-icon">🤖</span>
-      <h3>Robot Control</h3>
-      <p>By the end you'll program the Elegoo Smart Robot Car to do things you decide. That's your creation.</p>
-    </div>
-    <div class="learn-card reveal">
-      <span class="learn-icon">🛠️</span>
-      <h3>Problem Solving</h3>
-      <p>When your code doesn't work (it happens to everyone), you'll learn how to debug and figure it out.</p>
-    </div>
-    <div class="learn-card reveal">
-      <span class="learn-icon">🌍</span>
-      <h3>A New Way to See Tech</h3>
-      <p>You'll never look at a phone, a traffic light, or a robot the same way again. You'll see the code behind everything.</p>
-    </div>
-  </div>
-</section>
-
-<!-- MODEL STRIP -->
-<div class="model-strip">
-  <div class="centered reveal">
-    <div class="section-eyebrow">The Big Idea</div>
-    <h2 class="section-title">Every device in the world does this</h2>
-  </div>
-  <div class="model-flow reveal">
-    <div class="model-node node-input">
-      <span class="n-icon">👂</span>
-      <h3>INPUT</h3>
-      <p>Sensors, buttons, microphones — things that collect information from the world</p>
-    </div>
-    <div class="model-arrow">→</div>
-    <div class="model-node node-process">
-      <span class="n-icon">⚙️</span>
-      <h3>PROCESSING</h3>
-      <p>The Arduino reads your code and decides what to do with the information</p>
-    </div>
-    <div class="model-arrow">→</div>
-    <div class="model-node node-output">
-      <span class="n-icon">📢</span>
-      <h3>OUTPUT</h3>
-      <p>LEDs, motors, buzzers, screens — things that react to the world</p>
-    </div>
-  </div>
-</div>
-
-<!-- SESSIONS -->
-<section class="sessions-section" id="sessions">
-  <div class="centered reveal">
-    <div class="section-eyebrow">Your Sessions</div>
-    <h2 class="section-title">Pick up where you left off 📖</h2>
-    <p class="section-sub">Each session has a revision note and everything you need to review what we covered.</p>
-  </div>
-
-  <div class="sessions-grid">
-
-    <!-- Session 1 — LIVE -->
-    <div class="session-card reveal">
-      <div class="s1-bar"></div>
-      <div class="session-top">
-        <div class="session-num">Session 01 · Foundation</div>
-        <div class="session-title">Introduction to Arduino</div>
-        <div class="session-desc">The big model, your first program, how the board works, and making an LED blink with real C++ code.</div>
-        <span class="session-tag tag-live">✅ Completed</span>
-      </div>
-      <div class="session-bottom">
-        <a href="session1.html" class="session-link">Open Revision Note →</a>
-        <div class="session-pills">
-          <span class="pill">Blink</span>
-          <span class="pill">Pins</span>
-          <span class="pill">C++</span>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num">5</span>
+          <div class="stat-label">Sessions</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">10<span class="accent">h</span></span>
+          <div class="stat-label">Of Learning</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">4</span>
+          <div class="stat-label">Actuators You'll Program</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num"><span class="accent">∞</span></span>
+          <div class="stat-label">Things You Can Build</div>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- Session 2 -->
-    <div class="session-card locked reveal">
-      <div class="s2-bar"></div>
-      <div class="session-top">
-        <div class="session-num">Session 02 · Outputs</div>
-        <div class="session-title">Lights, Buzzers & More</div>
-        <div class="session-desc">Connect your own LED to the board. Add a buzzer. Control multiple outputs at once.</div>
-        <span class="session-tag tag-coming">🔒 Coming Soon</span>
+  <!-- MODEL -->
+  <div class="model-section">
+    <div class="inner">
+      <div class="reveal">
+        <div class="eyebrow">The Big Idea</div>
+        <h2 class="section-title">Every electronic device in the world does this</h2>
+        <p class="section-sub">From your phone to a traffic light to this robot — they all follow the same three-step pattern.</p>
       </div>
-      <div class="session-bottom">
-        <span class="session-link" style="color:var(--muted);cursor:default;">Not yet available</span>
-        <div class="session-pills">
-          <span class="pill">LEDs</span>
-          <span class="pill">Buzzer</span>
-          <span class="pill">PWM</span>
+      <div class="model-flow reveal reveal-delay-1">
+        <div class="model-node model-node-input">
+          <span class="n-emoji">👂</span>
+          <span class="n-label">Step 1</span>
+          <div class="n-title">Input</div>
+          <p class="n-desc">Collects information from the world around it.</p>
+          <div class="n-examples">
+            <span class="n-chip">Microphone</span>
+            <span class="n-chip">Button</span>
+            <span class="n-chip">Motion sensor</span>
+            <span class="n-chip">Light sensor</span>
+          </div>
+        </div>
+        <div class="model-arrow-col">→</div>
+        <div class="model-node model-node-process">
+          <span class="n-emoji">⚙️</span>
+          <span class="n-label">Step 2</span>
+          <div class="n-title">Processing</div>
+          <p class="n-desc">Reads your code and decides what to do.</p>
+          <div class="n-examples">
+            <span class="n-chip">Arduino Uno</span>
+            <span class="n-chip">Your C++ code</span>
+          </div>
+        </div>
+        <div class="model-arrow-col">→</div>
+        <div class="model-node model-node-output">
+          <span class="n-emoji">📢</span>
+          <span class="n-label">Step 3</span>
+          <div class="n-title">Output</div>
+          <p class="n-desc">Does something physical you can see, hear, or feel.</p>
+          <div class="n-examples">
+            <span class="n-chip">LED</span>
+            <span class="n-chip">Buzzer</span>
+            <span class="n-chip">Servo motor</span>
+            <span class="n-chip">Screen</span>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Session 3 -->
-    <div class="session-card locked reveal">
-      <div class="s3-bar"></div>
-      <div class="session-top">
-        <div class="session-num">Session 03 · Inputs</div>
-        <div class="session-title">Sensors & Buttons</div>
-        <div class="session-desc">Read the world with sensors. Make things happen when you press a button or wave your hand.</div>
-        <span class="session-tag tag-coming">🔒 Coming Soon</span>
+  <!-- WHAT YOU LEARN -->
+  <div class="learn-section">
+    <div class="inner">
+      <div class="reveal center">
+        <div class="eyebrow">What You'll Learn</div>
+        <h2 class="section-title">From zero to builder 🚀</h2>
+        <p class="section-sub" style="margin:0 auto;">No experience needed. We start from scratch and build up together.</p>
       </div>
-      <div class="session-bottom">
-        <span class="session-link" style="color:var(--muted);cursor:default;">Not yet available</span>
-        <div class="session-pills">
-          <span class="pill">Ultrasonic</span>
-          <span class="pill">IR</span>
-          <span class="pill">if/else</span>
+      <div class="learn-grid">
+        <div class="learn-card reveal reveal-delay-1">
+          <span class="lc-icon">🧠</span>
+          <h3>How Computers Think</h3>
+          <p>The Input → Processing → Output model that every electronic device in the world uses — from your phone to a robot.</p>
+        </div>
+        <div class="learn-card reveal reveal-delay-2">
+          <span class="lc-icon">🔌</span>
+          <h3>Electronics Basics</h3>
+          <p>Pins, breadboards, resistors, circuits — you'll know how to read a board and connect real components safely.</p>
+        </div>
+        <div class="learn-card reveal reveal-delay-3">
+          <span class="lc-icon">💻</span>
+          <h3>Real C++ Programming</h3>
+          <p>The same language engineers at companies like Tesla and SpaceX use — to control LEDs, sensors, and motors.</p>
+        </div>
+        <div class="learn-card reveal reveal-delay-1">
+          <span class="lc-icon">🤖</span>
+          <h3>Robot Control</h3>
+          <p>By Session 5 you'll program the Elegoo Smart Robot Car to do exactly what you decide. Your code, your robot.</p>
+        </div>
+        <div class="learn-card reveal reveal-delay-2">
+          <span class="lc-icon">🛠️</span>
+          <h3>Debugging & Problem Solving</h3>
+          <p>When your code doesn't work — and it will happen — you'll learn how engineers actually fix things.</p>
+        </div>
+        <div class="learn-card reveal reveal-delay-3">
+          <span class="lc-icon">🌍</span>
+          <h3>A New Way to See the World</h3>
+          <p>You'll never look at a phone, traffic light, or appliance the same way again. You'll see the code behind everything.</p>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Session 4 -->
-    <div class="session-card locked reveal">
-      <div class="s4-bar"></div>
-      <div class="session-top">
-        <div class="session-num">Session 04 · Combining</div>
-        <div class="session-title">Inputs Meet Outputs</div>
-        <div class="session-desc">When a sensor sees something → the motor moves. Connect the two halves and make a real system.</div>
-        <span class="session-tag tag-coming">🔒 Coming Soon</span>
+  <!-- SESSIONS -->
+  <div class="sessions-section">
+    <div class="inner">
+      <div class="reveal">
+        <div class="eyebrow">Your Sessions</div>
+        <h2 class="section-title">Pick up where you left off</h2>
+        <p class="section-sub">Each session builds on the last. Open your revision note, test yourself, then come back ready.</p>
       </div>
-      <div class="session-bottom">
-        <span class="session-link" style="color:var(--muted);cursor:default;">Not yet available</span>
-        <div class="session-pills">
-          <span class="pill">Logic</span>
-          <span class="pill">Motors</span>
-          <span class="pill">Loops</span>
+
+      <div class="sessions-list">
+        <a href="session1.html" class="session-row reveal">
+          <div class="session-num-badge">01</div>
+          <div class="session-row-body">
+            <div class="session-row-title">Introduction to Arduino</div>
+            <div class="session-row-desc">What Arduino is, the big model, your first C++ program, making an LED blink.</div>
+          </div>
+          <div class="session-row-right">
+            <div class="session-topics">
+              <span class="tag tag-input">Inputs</span>
+              <span class="tag tag-output">Outputs</span>
+            </div>
+            <span class="session-pill pill-live">✓ Completed</span>
+          </div>
+        </a>
+
+        <a href="session2.html" class="session-row reveal reveal-delay-1">
+          <div class="session-num-badge">02</div>
+          <div class="session-row-body">
+            <div class="session-row-title">Outputs & Actuators</div>
+            <div class="session-row-desc">External LED, buzzer, servo motor, RGB LED — four actuators, one session.</div>
+          </div>
+          <div class="session-row-right">
+            <div class="session-topics">
+              <span class="tag tag-digital">Digital</span>
+              <span class="tag tag-analog">Analog/PWM</span>
+            </div>
+            <span class="session-pill pill-live">✓ Completed</span>
+          </div>
+        </a>
+
+        <div class="session-row locked reveal reveal-delay-2">
+          <div class="session-num-badge">03</div>
+          <div class="session-row-body">
+            <div class="session-row-title">Sensors & Inputs</div>
+            <div class="session-row-desc">Ultrasonic, IR sensor, buttons — reading the world and reacting to it.</div>
+          </div>
+          <div class="session-row-right">
+            <span class="session-pill pill-coming">🔒 Coming Soon</span>
+          </div>
+        </div>
+
+        <div class="session-row locked reveal reveal-delay-3">
+          <div class="session-num-badge">04</div>
+          <div class="session-row-body">
+            <div class="session-row-title">Combining Inputs & Outputs</div>
+            <div class="session-row-desc">When a sensor triggers an actuator — building real reactive systems.</div>
+          </div>
+          <div class="session-row-right">
+            <span class="session-pill pill-coming">🔒 Coming Soon</span>
+          </div>
+        </div>
+
+        <div class="session-row locked reveal">
+          <div class="session-num-badge" style="background:var(--teal-dark);">05</div>
+          <div class="session-row-body">
+            <div class="session-row-title">Project Day 🤖</div>
+            <div class="session-row-desc">Design it. Build it. Demo it. The Elegoo Smart Car is yours to command.</div>
+          </div>
+          <div class="session-row-right">
+            <span class="session-pill pill-coming">🔒 Coming Soon</span>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Session 5 -->
-    <div class="session-card locked reveal">
-      <div class="s5-bar"></div>
-      <div class="session-top">
-        <div class="session-num">Session 05 · Project Day</div>
-        <div class="session-title">Build Your Robot 🤖</div>
-        <div class="session-desc">Final session. You design it, you build it, you demo it. The Elegoo Smart Car is yours to control.</div>
-        <span class="session-tag tag-coming">🔒 Coming Soon</span>
+  <!-- TOOLS -->
+  <div class="tools-section">
+    <div class="inner">
+      <div class="reveal">
+        <div class="eyebrow">Your Toolkit</div>
+        <h2 class="section-title" style="color:var(--white);">Everything in this programme is free</h2>
+        <p class="section-sub" style="color:rgba(255,255,255,0.5);">No subscriptions. No paywalls. Just tools, a board, and your ideas.</p>
       </div>
-      <div class="session-bottom">
-        <span class="session-link" style="color:var(--muted);cursor:default;">Not yet available</span>
-        <div class="session-pills">
-          <span class="pill">Final Project</span>
-          <span class="pill">Demo</span>
+      <div class="tools-grid">
+        <div class="tool-card reveal">
+          <div class="tool-icon">🔧</div>
+          <div class="tool-info">
+            <h4>Arduino IDE</h4>
+            <p>Where you write your code and send it to the board. Free to download and use forever.</p>
+            <a href="https://www.arduino.cc/en/software" target="_blank">Download free →</a>
+          </div>
+        </div>
+        <div class="tool-card reveal reveal-delay-1">
+          <div class="tool-icon">🌐</div>
+          <div class="tool-info">
+            <h4>Wokwi Simulator</h4>
+            <p>Build Arduino circuits and test code in your browser. No hardware needed to practice.</p>
+            <a href="https://wokwi.com" target="_blank">Open Wokwi →</a>
+          </div>
+        </div>
+        <div class="tool-card reveal reveal-delay-2">
+          <div class="tool-icon">🤖</div>
+          <div class="tool-info">
+            <h4>Arduino Uno R3</h4>
+            <p>The microcontroller board at the heart of everything you'll build in this programme.</p>
+          </div>
+        </div>
+        <div class="tool-card reveal reveal-delay-3">
+          <div class="tool-icon">🚗</div>
+          <div class="tool-info">
+            <h4>Elegoo Smart Car Kit</h4>
+            <p>The robot you'll fully program by Session 5. It drives, senses, and responds — all from your code.</p>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 
+  <!-- CTA -->
+  <div class="cta-banner">
+    <div class="reveal">
+      <h2>Ready to keep building?<br><span>Session 1 is waiting for you.</span></h2>
+      <p>Review what you've learned, test yourself with the quiz, and come back stronger for the next session.</p>
+      <a href="session1.html" class="btn btn-primary">📚 Open Session 1 →</a>
+    </div>
   </div>
-</section>
 
-<!-- TOOLS -->
-<section class="tools-section" id="tools">
-  <div class="reveal">
-    <div class="section-eyebrow">Tools We Use</div>
-    <h2 class="section-title">Your toolkit 🛠️</h2>
-    <p class="section-sub">Everything in this programme is either free or already available to you.</p>
-  </div>
-  <div class="tools-row" style="margin-top:48px;">
-    <div class="tool-chip reveal">
-      <div class="tool-icon">🔧</div>
-      <div class="tool-info">
-        <h4>Arduino IDE</h4>
-        <p>Where you write and upload your code to the board</p>
-      </div>
-    </div>
-    <div class="tool-chip reveal">
-      <div class="tool-icon">🌐</div>
-      <div class="tool-info">
-        <h4>Wokwi Simulator</h4>
-        <p>Practice building circuits online — no hardware needed</p>
-      </div>
-    </div>
-    <div class="tool-chip reveal">
-      <div class="tool-icon">🤖</div>
-      <div class="tool-info">
-        <h4>Arduino Uno R3</h4>
-        <p>The board that runs everything you build</p>
-      </div>
-    </div>
-    <div class="tool-chip reveal">
-      <div class="tool-icon">🚗</div>
-      <div class="tool-info">
-        <h4>Elegoo Smart Car</h4>
-        <p>The robot you'll fully program by Session 5</p>
-      </div>
-    </div>
-  </div>
-</section>
+</div><!-- end page-body -->
 
-<!-- CTA BANNER -->
-<div class="cta-banner">
-  <div class="reveal">
-    <h2>Ready to keep building?<br><span>Your next session awaits.</span></h2>
-    <p>Go over what you've learned, take the quiz, and come back ready to go further.</p>
-    <a href="#sessions" class="btn-primary" style="display:inline-flex;">📚 Go to Session 1 →</a>
-  </div>
-</div>
+<div id="footer-placeholder"></div>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <div class="nav-logo">🤖 <span>Smart</span>School</div>
-      <p>A robotics education programme bringing engineering skills to Nigerian secondary school students.</p>
-      <p style="margin-top:10px;font-size:12px;color:#4A6070;">Powered by <strong style="color:var(--teal);">BLASS College</strong></p>
-    </div>
-    <div class="footer-links">
-      <h4>Sessions</h4>
-      <ul>
-        <li><a href="session1.html">Session 1 — Introduction</a></li>
-        <li><a href="#">Session 2 — Outputs (soon)</a></li>
-        <li><a href="#">Session 3 — Inputs (soon)</a></li>
-        <li><a href="#">Session 4 — Combining (soon)</a></li>
-        <li><a href="#">Session 5 — Project Day (soon)</a></li>
-      </ul>
-    </div>
-    <div class="footer-links">
-      <h4>Resources</h4>
-      <ul>
-        <li><a href="https://wokwi.com" target="_blank">Wokwi Simulator</a></li>
-        <li><a href="https://www.arduino.cc/en/software" target="_blank">Arduino IDE Download</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2026 Smart School · Government Robotics Education Initiative</p>
-    <p>Built with ❤️ by <span>Moses Emmanuel</span> for <span>BLASS College</span></p>
-  </div>
-</footer>
-
+<script src="js/main.js"></script>
 <script>
-// ── TYPEWRITER ──
-const words = ['robots.', 'computers.', 'the future.', 'Arduino.'];
-let wi = 0, ci = 0, deleting = false;
-const el = document.getElementById('typewriter');
+  // Inject shared nav and footer
+  document.getElementById('nav-placeholder').outerHTML = renderNav('dark');
+  document.getElementById('footer-placeholder').outerHTML = renderFooter();
 
-function type() {
-  const word = words[wi];
-  if (!deleting) {
-    el.textContent = word.slice(0, ++ci);
-    if (ci === word.length) { deleting = true; setTimeout(type, 1800); return; }
-  } else {
-    el.textContent = word.slice(0, --ci);
-    if (ci === 0) { deleting = false; wi = (wi + 1) % words.length; }
+  // Typewriter
+  const words = ['builder.', 'creator.', 'engineer.', 'maker.'];
+  let wi = 0, ci = 0, deleting = false;
+  const el = document.getElementById('typewriter');
+  function type() {
+    const word = words[wi];
+    if (!deleting) {
+      el.textContent = word.slice(0, ++ci);
+      if (ci === word.length) { deleting = true; setTimeout(type, 2000); return; }
+    } else {
+      el.textContent = word.slice(0, --ci);
+      if (ci === 0) { deleting = false; wi = (wi + 1) % words.length; }
+    }
+    setTimeout(type, deleting ? 50 : 85);
   }
-  setTimeout(type, deleting ? 55 : 90);
-}
-type();
-
-// ── SCROLL REVEAL ──
-const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-}, { threshold: 0.12 });
-reveals.forEach(r => observer.observe(r));
-
-// ── NAV SHADOW ON SCROLL ──
-window.addEventListener('scroll', () => {
-  document.querySelector('nav').style.boxShadow =
-    window.scrollY > 20 ? '0 4px 24px rgba(0,0,0,0.4)' : 'none';
-});
+  type();
 </script>
 </body>
 </html>

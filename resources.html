@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resources — Smart School</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+.page-banner {
+  background: var(--ink);
+  padding: 80px 24px 64px;
+  text-align: center;
+}
+.page-banner .eyebrow { justify-content: center; color: var(--teal); }
+.page-banner .eyebrow::before { background: var(--teal); }
+.page-banner h1 { font-family: var(--font-display); font-size: clamp(28px,5vw,48px); font-weight:700; color: var(--white); letter-spacing: -1px; margin-top: 10px; }
+.page-banner p { color: rgba(255,255,255,0.5); font-size: 17px; max-width: 480px; margin: 16px auto 0; line-height: 1.7; }
+
+.resources-body { max-width: var(--max-w); margin: 0 auto; padding: 72px 24px 80px; }
+
+.res-category { margin-bottom: 56px; }
+.res-category h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.res-category h2 .cat-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+
+.res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.res-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.res-card:hover { border-color: var(--teal); box-shadow: var(--shadow); transform: translateY(-2px); }
+.res-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.res-card-icon { font-size: 22px; flex-shrink: 0; }
+.res-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--surface3);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.res-badge.free { background: rgba(0,196,154,0.1); color: var(--teal-dark); }
+.res-card h3 { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--ink); }
+.res-card p { font-size: 13px; color: var(--muted); line-height: 1.6; flex: 1; }
+.res-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--teal-dark);
+  margin-top: 10px;
+  transition: gap 0.15s;
+}
+.res-link:hover { gap: 8px; }
+
+/* Colour reference table */
+.colour-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 8px; }
+.colour-table th { padding: 10px 14px; text-align: left; font-family: var(--font-display); font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+.colour-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--ink3); }
+.colour-table tr:last-child td { border-bottom: none; }
+.colour-swatch { display: inline-block; width: 20px; height: 20px; border-radius: 4px; vertical-align: middle; margin-right: 8px; border: 1px solid rgba(0,0,0,0.08); }
+.colour-table code { font-family: var(--font-mono); font-size: 12px; background: var(--surface); padding: 2px 6px; border-radius: 4px; color: var(--ink); }
+
+/* Shortcut table */
+.shortcut-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.shortcut-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--ink3); }
+.shortcut-table tr:last-child td { border-bottom: none; }
+.shortcut-table kbd {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 3px 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.1);
+  color: var(--ink);
+}
+
+/* Frequency table */
+.freq-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.freq-table th { padding: 10px 14px; text-align: left; font-family: var(--font-display); font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid var(--border); background: var(--surface); }
+.freq-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--ink3); font-family: var(--font-mono); font-size: 13px; }
+.freq-table tr:last-child td { border-bottom: none; }
+
+.tip-box {
+  background: rgba(0,196,154,0.06);
+  border-left: 3px solid var(--teal);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 14px 18px;
+  margin: 16px 0;
+  font-size: 14px;
+  color: var(--ink3);
+  line-height: 1.6;
+}
+.tip-box strong { color: var(--teal-dark); }
+
+@media(max-width:480px){ .res-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+<div class="nav-mobile" id="mobile-nav-placeholder"></div>
+
+<div class="page-body">
+  <div class="page-banner">
+    <div class="eyebrow">Resources</div>
+    <h1>Everything you need to keep building</h1>
+    <p>Tools, references, cheat sheets, and links — all in one place. Bookmark this page.</p>
+  </div>
+
+  <div class="circuit-trace">
+    <div class="circuit-trace-line"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+  </div>
+
+  <div class="resources-body">
+
+    <!-- TOOLS -->
+    <div class="res-category reveal">
+      <h2><span class="cat-icon">🛠️</span> Essential Tools</h2>
+      <div class="res-grid">
+        <div class="res-card">
+          <div class="res-card-top">
+            <span class="res-card-icon">🌐</span>
+            <span class="res-badge free">Free</span>
+          </div>
+          <h3>Wokwi Simulator</h3>
+          <p>Build and test Arduino circuits in your browser — no physical hardware needed. Perfect for practising between sessions.</p>
+          <a href="https://wokwi.com" target="_blank" class="res-link">Open Wokwi →</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top">
+            <span class="res-card-icon">💾</span>
+            <span class="res-badge free">Free</span>
+          </div>
+          <h3>Arduino IDE</h3>
+          <p>The official code editor for Arduino. Write your sketch, then upload it to the board. Download and install on any computer.</p>
+          <a href="https://www.arduino.cc/en/software" target="_blank" class="res-link">Download →</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top">
+            <span class="res-card-icon">📖</span>
+            <span class="res-badge free">Free</span>
+          </div>
+          <h3>Arduino Language Reference</h3>
+          <p>Official documentation for every Arduino function. When you want to know exactly what a function does, this is the place.</p>
+          <a href="https://www.arduino.cc/reference/en/" target="_blank" class="res-link">Open reference →</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top">
+            <span class="res-card-icon">🎮</span>
+            <span class="res-badge free">Free</span>
+          </div>
+          <h3>Tinkercad Circuits</h3>
+          <p>Another great browser-based simulator. Good for visualising 3D component placement on a breadboard before building.</p>
+          <a href="https://www.tinkercad.com/circuits" target="_blank" class="res-link">Open Tinkercad →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARDUINO CHEAT SHEET -->
+    <div class="res-category reveal">
+      <h2><span class="cat-icon">💻</span> Arduino Code Cheat Sheet</h2>
+
+      <div class="code-block">
+        <div class="code-bar">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-filename">cheatsheet.ino</span>
+        </div>
+        <pre><span class="cc">// ── STRUCTURE ───────────────────────────</span>
+<span class="ck">void</span> <span class="cf">setup</span>() { }   <span class="cc">// runs once at startup</span>
+<span class="ck">void</span> <span class="cf">loop</span>()  { }   <span class="cc">// runs forever after setup</span>
+
+<span class="cc">// ── VARIABLES ───────────────────────────</span>
+<span class="ck">int</span>   <span class="cv">myNumber</span> = <span class="cn">10</span>;    <span class="cc">// whole number</span>
+<span class="ck">float</span> <span class="cv">myDecimal</span> = <span class="cn">3.14</span>; <span class="cc">// decimal number</span>
+<span class="ck">bool</span>  <span class="cv">isOn</span> = <span class="cs">true</span>;       <span class="cc">// true or false only</span>
+
+<span class="cc">// ── DIGITAL ─────────────────────────────</span>
+<span class="cf">pinMode</span>(pin, <span class="cs">OUTPUT</span>);        <span class="cc">// set pin as output</span>
+<span class="cf">pinMode</span>(pin, <span class="cs">INPUT</span>);         <span class="cc">// set pin as input</span>
+<span class="cf">digitalWrite</span>(pin, <span class="cs">HIGH</span>);     <span class="cc">// turn pin ON  (1)</span>
+<span class="cf">digitalWrite</span>(pin, <span class="cs">LOW</span>);      <span class="cc">// turn pin OFF (0)</span>
+<span class="cf">digitalRead</span>(pin);             <span class="cc">// read: returns HIGH or LOW</span>
+
+<span class="cc">// ── ANALOG ──────────────────────────────</span>
+<span class="cf">analogWrite</span>(pin, value);      <span class="cc">// PWM output: 0-255 (pins ~3,5,6,9,10,11)</span>
+<span class="cf">analogRead</span>(pin);              <span class="cc">// read: returns 0-1023 (analog pins A0-A5)</span>
+
+<span class="cc">// ── TIMING ──────────────────────────────</span>
+<span class="cf">delay</span>(<span class="cn">1000</span>);                  <span class="cc">// wait 1000ms = 1 second</span>
+<span class="cf">millis</span>();                     <span class="cc">// ms since board started</span>
+
+<span class="cc">// ── SOUND ───────────────────────────────</span>
+<span class="cf">tone</span>(pin, frequency);         <span class="cc">// play tone (Hz)</span>
+<span class="cf">tone</span>(pin, frequency, duration);<span class="cc">// play for duration ms</span>
+<span class="cf">noTone</span>(pin);                  <span class="cc">// stop tone</span>
+
+<span class="cc">// ── SERVO ───────────────────────────────</span>
+<span class="ck">#include</span> <span class="cs">&lt;Servo.h&gt;</span>
+<span class="ck">Servo</span> <span class="cv">myServo</span>;
+<span class="cv">myServo</span>.<span class="cf">attach</span>(pin);          <span class="cc">// connect servo to pin</span>
+<span class="cv">myServo</span>.<span class="cf">write</span>(angle);         <span class="cc">// move to angle (0-180)</span>
+
+<span class="cc">// ── SERIAL MONITOR ──────────────────────</span>
+<span class="cf">Serial</span>.<span class="cf">begin</span>(<span class="cn">9600</span>);           <span class="cc">// start in setup()</span>
+<span class="cf">Serial</span>.<span class="cf">println</span>(value);        <span class="cc">// print with newline</span>
+<span class="cf">Serial</span>.<span class="cf">print</span>(value);          <span class="cc">// print without newline</span>
+
+<span class="cc">// ── LOGIC ───────────────────────────────</span>
+<span class="ck">if</span> (x > <span class="cn">10</span>) { }              <span class="cc">// if condition</span>
+<span class="ck">if</span> (x > <span class="cn">10</span>) { } <span class="ck">else</span> { }    <span class="cc">// if / else</span>
+<span class="ck">for</span> (<span class="ck">int</span> <span class="cv">i</span>=<span class="cn">0</span>; <span class="cv">i</span>&lt;<span class="cn">10</span>; <span class="cv">i</span>++) { } <span class="cc">// loop 10 times</span></pre>
+      </div>
+    </div>
+
+    <!-- RGB COLOUR TABLE -->
+    <div class="res-category reveal">
+      <h2><span class="cat-icon">🌈</span> RGB LED Colour Reference</h2>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:16px;">Mix these values in <code style="font-family:var(--font-mono);font-size:12px;background:var(--surface);padding:2px 6px;border-radius:4px;">analogWrite(pin, value)</code> to make any colour.</p>
+      <table class="colour-table">
+        <tr><th>Colour</th><th>Red (0–255)</th><th>Green (0–255)</th><th>Blue (0–255)</th><th>Notes</th></tr>
+        <tr><td><span class="colour-swatch" style="background:#FF0000;"></span>Red</td><td><code>255</code></td><td><code>0</code></td><td><code>0</code></td><td>Pure red</td></tr>
+        <tr><td><span class="colour-swatch" style="background:#00FF00;"></span>Green</td><td><code>0</code></td><td><code>255</code></td><td><code>0</code></td><td>Pure green</td></tr>
+        <tr><td><span class="colour-swatch" style="background:#0000FF;"></span>Blue</td><td><code>0</code></td><td><code>0</code></td><td><code>255</code></td><td>Pure blue</td></tr>
+        <tr><td><span class="colour-swatch" style="background:#FFFFFF;border:1px solid #ddd;"></span>White</td><td><code>255</code></td><td><code>255</code></td><td><code>255</code></td><td>All at full power</td></tr>
+        <tr><td><span class="colour-swatch" style="background:#000000;"></span>Off</td><td><code>0</code></td><td><code>0</code></td><td><code>0</code></td><td>All at zero</td></tr>
+        <tr><td><span class="colour-swatch" style="background:#FFCC00;"></span>Yellow</td><td><code>255</code></td><td><code>200</code></td><td><code>0</code></td><td>Red + Green mix</td></tr>
+        <tr><td><span class="colour-swatch" style="background:#9B00FF;"></span>Purple</td><td><code>150</code></td><td><code>0</code></td><td><code>255</code></td><td>Red + Blue mix</td></tr>
+        <tr><td><span class="colour-swatch" style="background:#00FFFF;"></span>Cyan</td><td><code>0</code></td><td><code>255</code></td><td><code>255</code></td><td>Green + Blue mix</td></tr>
+        <tr><td><span class="colour-swatch" style="background:#FF6000;"></span>Orange</td><td><code>255</code></td><td><code>96</code></td><td><code>0</code></td><td>Mostly red, little green</td></tr>
+        <tr><td><span class="colour-swatch" style="background:#FF69B4;"></span>Pink</td><td><code>255</code></td><td><code>20</code></td><td><code>147</code></td><td>Red + a bit of blue</td></tr>
+      </table>
+    </div>
+
+    <!-- BUZZER FREQUENCIES -->
+    <div class="res-category reveal">
+      <h2><span class="cat-icon">🎵</span> Buzzer Note Frequencies</h2>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:16px;">Use these with <code style="font-family:var(--font-mono);font-size:12px;background:var(--surface);padding:2px 6px;border-radius:4px;">tone(pin, frequency)</code> to play musical notes.</p>
+      <table class="freq-table">
+        <tr><th>Note</th><th>Frequency (Hz)</th><th>Note</th><th>Frequency (Hz)</th></tr>
+        <tr><td>C4 (Middle C)</td><td>262</td><td>G4</td><td>392</td></tr>
+        <tr><td>D4</td><td>294</td><td>A4</td><td>440</td></tr>
+        <tr><td>E4</td><td>330</td><td>B4</td><td>494</td></tr>
+        <tr><td>F4</td><td>349</td><td>C5 (High C)</td><td>523</td></tr>
+      </table>
+      <div class="tip-box">
+        <strong>Tip:</strong> Higher frequency numbers = higher pitch. Lower numbers = deeper sound. Try 100 for a low rumble or 4000 for a sharp alert beep.
+      </div>
+    </div>
+
+    <!-- IDE SHORTCUTS -->
+    <div class="res-category reveal">
+      <h2><span class="cat-icon">⌨️</span> Arduino IDE Keyboard Shortcuts</h2>
+      <table class="shortcut-table">
+        <tr><td><kbd>Ctrl</kbd> + <kbd>R</kbd></td><td>Verify / Compile — check your code for errors without uploading</td></tr>
+        <tr><td><kbd>Ctrl</kbd> + <kbd>U</kbd></td><td>Upload — compile and send to the Arduino board</td></tr>
+        <tr><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd></td><td>Open Serial Monitor — see output printed with Serial.println()</td></tr>
+        <tr><td><kbd>Ctrl</kbd> + <kbd>/</kbd></td><td>Toggle comment on selected lines</td></tr>
+        <tr><td><kbd>Ctrl</kbd> + <kbd>Z</kbd></td><td>Undo last change</td></tr>
+        <tr><td><kbd>Ctrl</kbd> + <kbd>A</kbd></td><td>Select all code</td></tr>
+        <tr><td><kbd>Ctrl</kbd> + <kbd>N</kbd></td><td>New sketch</td></tr>
+        <tr><td><kbd>Ctrl</kbd> + <kbd>S</kbd></td><td>Save</td></tr>
+      </table>
+    </div>
+
+    <!-- TROUBLESHOOTING -->
+    <div class="res-category reveal">
+      <h2><span class="cat-icon">🔍</span> Common Errors & How to Fix Them</h2>
+      <div class="res-grid">
+        <div class="res-card">
+          <div class="res-card-icon">❌</div>
+          <h3>'X' was not declared in this scope</h3>
+          <p>You used a variable or function name that doesn't exist or has a typo. Check spelling and capitalisation — Arduino is case-sensitive.</p>
+        </div>
+        <div class="res-card">
+          <div class="res-card-icon">❌</div>
+          <h3>Expected ';' before '}'</h3>
+          <p>You're missing a semicolon at the end of a line. Look at the line <em>before</em> the line number in the error message.</p>
+        </div>
+        <div class="res-card">
+          <div class="res-card-icon">❌</div>
+          <h3>No port selected / Board not found</h3>
+          <p>Check Tools → Port and select the COM port that appeared when you plugged in the Arduino. Try a different USB cable if no port appears.</p>
+        </div>
+        <div class="res-card">
+          <div class="res-card-icon">❌</div>
+          <h3>analogWrite() has no effect</h3>
+          <p>You're using analogWrite() on a pin that doesn't support PWM. Only pins marked with ~ work: 3, 5, 6, 9, 10, 11 on the Uno.</p>
+        </div>
+        <div class="res-card">
+          <div class="res-card-icon">❌</div>
+          <h3>LED doesn't light up</h3>
+          <p>Check: (1) long leg to the pin, short leg to GND, (2) resistor is in the circuit, (3) pin number in code matches actual wire, (4) pin is set to OUTPUT.</p>
+        </div>
+        <div class="res-card">
+          <div class="res-card-icon">❌</div>
+          <h3>Servo twitches but doesn't move properly</h3>
+          <p>The Arduino's 5V pin may not supply enough current. Try powering the servo directly from an external 5V source, or use fewer servos at once.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEO RESOURCES -->
+    <div class="res-category reveal">
+      <h2><span class="cat-icon">▶️</span> Learning Videos</h2>
+      <div class="res-grid">
+        <div class="res-card">
+          <div class="res-card-top">
+            <span class="res-card-icon">📺</span>
+            <span class="res-badge free">YouTube</span>
+          </div>
+          <h3>Arduino in 100 Seconds</h3>
+          <p>A super quick overview of what Arduino is and why it matters. Great for sharing with someone who's never heard of it.</p>
+          <a href="https://www.youtube.com/results?search_query=arduino+in+100+seconds" target="_blank" class="res-link">Watch →</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top">
+            <span class="res-card-icon">📺</span>
+            <span class="res-badge free">YouTube</span>
+          </div>
+          <h3>Paul McWhorter Arduino Series</h3>
+          <p>The best free Arduino tutorial series on YouTube. Starts from absolute basics and builds up slowly. Highly recommended for self-study.</p>
+          <a href="https://www.youtube.com/playlist?list=PLGs0VKk2DiYw-L-RibttcvK-WBZm8WLEP" target="_blank" class="res-link">Watch playlist →</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top">
+            <span class="res-card-icon">📺</span>
+            <span class="res-badge free">YouTube</span>
+          </div>
+          <h3>How Servo Motors Work</h3>
+          <p>A clear visual explanation of what's actually happening inside a servo motor when you call myServo.write().</p>
+          <a href="https://www.youtube.com/results?search_query=how+servo+motor+works+arduino" target="_blank" class="res-link">Watch →</a>
+        </div>
+        <div class="res-card">
+          <div class="res-card-top">
+            <span class="res-card-icon">📺</span>
+            <span class="res-badge free">YouTube</span>
+          </div>
+          <h3>RGB LED Explained</h3>
+          <p>How mixing red, green, and blue light creates every other colour — the physics behind what you're doing with analogWrite().</p>
+          <a href="https://www.youtube.com/results?search_query=rgb+led+arduino+tutorial" target="_blank" class="res-link">Watch →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="js/main.js"></script>
+<script>
+  document.getElementById('nav-placeholder').outerHTML = renderNav('dark');
+  document.getElementById('footer-placeholder').outerHTML = renderFooter();
+</script>
+</body>
+</html>
