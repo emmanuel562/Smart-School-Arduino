@@ -32,12 +32,12 @@ smartschool/
     main.js           ✅ Shared JS — nav, quiz, circuit trace, scroll reveal (complete)
 ```
 
-**Still to build:**
+**Current session page status:**
 ```
-  session2.html       ⬜ Session 2 — Outputs & Actuators
-  session3.html       ⬜ Session 3 — Sensors (coming soon shell)
-  session4.html       ⬜ Session 4 — Combining Inputs & Outputs (coming soon shell)
-  session5.html       ⬜ Session 5 — Project Day (coming soon shell)
+  session2.html       ✅ Session 2 — Outputs & Actuators
+  session3.html       ✅ Session 3 — Sensors & Inputs (coming soon shell)
+  session4.html       ✅ Session 4 — Combining Inputs & Outputs (coming soon shell)
+  session5.html       ✅ Session 5 — Project Day (coming soon shell)
 ```
 
 ---
