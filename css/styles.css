@@ -191,6 +191,10 @@ button { cursor: pointer; font-family: var(--font-body); }
   padding-top: var(--nav-h);
   min-height: 100vh;
 }
+/* Dark hero/banner sits under fixed nav; clearance is inside the banner */
+.page-body--bleed {
+  padding-top: 0;
+}
 
 /* ── CIRCUIT TRACE — signature element ── */
 .circuit-trace {
