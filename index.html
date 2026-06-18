@@ -103,7 +103,7 @@
   display: flex;
   justify-content: center;
   gap: 0;
-  margin-top: 72px;
+  margin-top: 40px;
   padding-top: 48px;
   border-top: 1px solid rgba(255,255,255,0.06);
 }
@@ -133,31 +133,42 @@
 .model-section .inner { max-width: var(--max-w); margin: 0 auto; }
 .model-flow {
   display: flex;
-  align-items: stretch;
-  gap: 0;
-  margin-top: 52px;
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-}
-.model-node {
-  flex: 1;
-  padding: 36px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.model-node-input   { background: var(--ink); }
-.model-node-process { background: var(--ink2); }
-.model-node-output  { background: var(--ink3); }
-.model-arrow-col {
-  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 4px;
+  gap: 16px;
+  margin-top: 52px;
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.model-node {
+  flex: 0 1 220px;
+  width: 320px;
+  height: 320px;
   background: var(--ink2);
-  color: var(--teal);
-  font-size: 20px;
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  border: 2px solid;
+  transition: transform .2s;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  justify-content: center;
+}
+.model-node:hover { transform: scale(1.03); }
+.model-node-input { border-color: #60A5FA; }
+.model-node-input .n-title { color: #60A5FA; }
+.model-node-process { border-color: var(--yellow); }
+.model-node-process .n-title { color: var(--yellow); }
+.model-node-output { border-color: var(--copper); }
+.model-node-output .n-title { color: var(--copper); }
+.model-arrow-col {
+  font-size: 28px;
+  color: var(--muted);
+  padding: 0 8px;
+  flex-shrink: 0;
   font-weight: 700;
 }
 .model-node .n-emoji { font-size: 36px; }
@@ -409,8 +420,8 @@
 
     <div class="hero-inner">
       <h1>
-        You're not just<br>a student.<br>
-        You're a <span class="teal" id="typewriter">builder</span><span class="cursor"></span>
+        Learn to talk to <br>
+        <span class="teal" id="typewriter">Robots</span><span class="cursor"></span>
       </h1>
 
       <p>In 5 sessions, you'll go from never touching a circuit board to programming your own robot. Real code. Real circuits. Real engineering.</p>
@@ -431,7 +442,7 @@
         </div>
         <div class="stat-item">
           <span class="stat-num">4</span>
-          <div class="stat-label">Actuators You'll Program</div>
+          <div class="stat-label">Mini projects You'll Program</div>
         </div>
         <div class="stat-item">
           <span class="stat-num"><span class="accent">∞</span></span>
@@ -441,6 +452,49 @@
     </div>
   </section>
 
+  <!-- WHAT YOU LEARN -->
+  <div class="learn-section">
+    <div class="inner">
+      <div class="reveal center">
+        <div class="eyebrow">What You'll Learn</div>
+        <h2 class="section-title">From zero to builder 🚀</h2>
+        <p class="section-sub" style="margin:0 auto;">No experience needed. We start from scratch and build up together.</p>
+      </div>
+      <div class="learn-grid">
+        <div class="learn-card reveal reveal-delay-1">
+          <span class="lc-icon">🧠</span>
+          <h3>How Computers Think</h3>
+          <p>The Input → Processing → Output model that every electronic device in the world uses — from your phone to a robot.</p>
+        </div>
+        <div class="learn-card reveal reveal-delay-2">
+          <span class="lc-icon">🔌</span>
+          <h3>Electronics Basics</h3>
+          <p>Pins, breadboards, resistors, circuits — you'll know how to read a board and connect real components safely.</p>
+        </div>
+        <div class="learn-card reveal reveal-delay-3">
+          <span class="lc-icon">💻</span>
+          <h3>Real C++ Programming</h3>
+          <p>The same language engineers at companies like Tesla and SpaceX use — to control LEDs, sensors, and motors.</p>
+        </div>
+        <div class="learn-card reveal reveal-delay-1">
+          <span class="lc-icon">🤖</span>
+          <h3>Robot Control</h3>
+          <p>By Session 5 you'll program the Elegoo Smart Robot Car to do exactly what you decide. Your code, your robot.</p>
+        </div>
+        <div class="learn-card reveal reveal-delay-2">
+          <span class="lc-icon">🛠️</span>
+          <h3>Debugging & Problem Solving</h3>
+          <p>When your code doesn't work — and it will happen — you'll learn how engineers actually fix things.</p>
+        </div>
+        <div class="learn-card reveal reveal-delay-3">
+          <span class="lc-icon">🌍</span>
+          <h3>A New Way to See the World</h3>
+          <p>You'll never look at a phone, traffic light, or appliance the same way again. You'll see the code behind everything.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <!-- MODEL -->
   <div class="model-section">
     <div class="inner">
@@ -485,49 +539,6 @@
             <span class="n-chip">Servo motor</span>
             <span class="n-chip">Screen</span>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- WHAT YOU LEARN -->
-  <div class="learn-section">
-    <div class="inner">
-      <div class="reveal center">
-        <div class="eyebrow">What You'll Learn</div>
-        <h2 class="section-title">From zero to builder 🚀</h2>
-        <p class="section-sub" style="margin:0 auto;">No experience needed. We start from scratch and build up together.</p>
-      </div>
-      <div class="learn-grid">
-        <div class="learn-card reveal reveal-delay-1">
-          <span class="lc-icon">🧠</span>
-          <h3>How Computers Think</h3>
-          <p>The Input → Processing → Output model that every electronic device in the world uses — from your phone to a robot.</p>
-        </div>
-        <div class="learn-card reveal reveal-delay-2">
-          <span class="lc-icon">🔌</span>
-          <h3>Electronics Basics</h3>
-          <p>Pins, breadboards, resistors, circuits — you'll know how to read a board and connect real components safely.</p>
-        </div>
-        <div class="learn-card reveal reveal-delay-3">
-          <span class="lc-icon">💻</span>
-          <h3>Real C++ Programming</h3>
-          <p>The same language engineers at companies like Tesla and SpaceX use — to control LEDs, sensors, and motors.</p>
-        </div>
-        <div class="learn-card reveal reveal-delay-1">
-          <span class="lc-icon">🤖</span>
-          <h3>Robot Control</h3>
-          <p>By Session 5 you'll program the Elegoo Smart Robot Car to do exactly what you decide. Your code, your robot.</p>
-        </div>
-        <div class="learn-card reveal reveal-delay-2">
-          <span class="lc-icon">🛠️</span>
-          <h3>Debugging & Problem Solving</h3>
-          <p>When your code doesn't work — and it will happen — you'll learn how engineers actually fix things.</p>
-        </div>
-        <div class="learn-card reveal reveal-delay-3">
-          <span class="lc-icon">🌍</span>
-          <h3>A New Way to See the World</h3>
-          <p>You'll never look at a phone, traffic light, or appliance the same way again. You'll see the code behind everything.</p>
         </div>
       </div>
     </div>
@@ -672,7 +683,7 @@
   document.getElementById('footer-placeholder').outerHTML = renderFooter();
 
   // Typewriter
-  const words = ['builder.', 'creator.', 'engineer.', 'maker.'];
+  const words = ['robots.', 'arduino.', 'computers.', 'the future.'];
   let wi = 0, ci = 0, deleting = false;
   const el = document.getElementById('typewriter');
   function type() {
