@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 2 — Outputs & Actuators · Smart School</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+/* ── SESSION PAGE STYLES ── */
+.session-banner {
+  background: var(--ink);
+  padding: 80px 24px 56px;
+  position: relative;
+  overflow: hidden;
+}
+.session-banner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at 60% 0%, rgba(0,196,154,0.10), transparent 65%);
+  pointer-events: none;
+}
+.session-banner-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.session-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 24px;
+}
+.session-breadcrumb a { color: rgba(255,255,255,0.4); transition: color .15s; }
+.session-breadcrumb a:hover { color: var(--teal); }
+.session-breadcrumb .sep { color: rgba(255,255,255,0.2); }
+
+.session-banner-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.session-num-tag {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: var(--copper);
+  color: #fff;
+  padding: 4px 14px;
+  border-radius: 20px;
+}
+.session-status-tag {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(0,196,154,0.12);
+  color: var(--teal);
+  border: 1px solid rgba(0,196,154,0.25);
+}
+.session-banner h1 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+.session-banner p {
+  font-size: 17px;
+  color: rgba(255,255,255,0.5);
+  max-width: 520px;
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+.session-banner-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.session-progress {
+  background: rgba(255,255,255,0.06);
+  border-radius: 0;
+  height: 3px;
+  position: relative;
+}
+.session-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--copper));
+  border-radius: 0;
+  transition: width 1s ease;
+}
+.session-progress-label {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 8px 24px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: rgba(255,255,255,0.35);
+  background: var(--ink2);
+}
+
+.session-content {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 64px 24px 48px;
+}
+
+.concept-section { margin-bottom: 56px; }
+.concept-section h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.3px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.concept-section h2 .section-num {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--copper);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.concept-section > p {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.example-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.example-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  text-align: center;
+  transition: transform .2s, border-color .2s;
+}
+.example-card:hover { transform: translateY(-2px); border-color: rgba(0,196,154,0.3); }
+.ex-emoji { font-size: 28px; margin-bottom: 10px; }
+.ex-name { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.ex-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+.numlines { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+.numline-card {
+  background: var(--ink);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.nl-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; margin-bottom: 16px; }
+.nl-digital .nl-title { color: #60A5FA; }
+.nl-analog  .nl-title { color: #A78BFA; }
+.nl-track {
+  position: relative;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  margin-bottom: 8px;
+}
+.nl-track.digital-track { background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.15); }
+.nl-track.analog-track  { background: linear-gradient(to right, rgba(96,165,250,0.1), rgba(251,146,60,0.2)); border: 1px solid rgba(167,139,250,0.2); }
+.nl-dot { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0; color: #fff; }
+.nl-dot-off { background: #EF4444; }
+.nl-dot-on  { background: #22C55E; margin-left: auto; }
+.nl-dot-lo  { background: #60A5FA; font-size: 9px; }
+.nl-dot-mid { background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); font-size: 9px; margin: 0 auto; }
+.nl-dot-hi  { background: var(--copper); font-size: 9px; }
+.nl-line { flex: 1; height: 2px; background: rgba(255,255,255,0.08); margin: 0 4px; }
+.nl-sub { display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.4); }
+.nl-note { font-size: 12px; color: rgba(255,255,255,0.35); margin-top: 10px; line-height: 1.5; font-style: italic; }
+
+.actuator-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin: 20px 0;
+}
+.actuator-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  gap: 14px;
+  transition: border-color .2s, transform .2s;
+}
+.actuator-card:hover { border-color: rgba(0,196,154,0.3); transform: translateY(-2px); }
+.ac-emoji { font-size: 28px; flex-shrink: 0; }
+.ac-body { flex: 1; }
+.ac-name { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+.ac-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.ac-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 6px; }
+.ac-pin { font-size: 12px; color: var(--muted-lt); font-style: italic; }
+
+.wire-table-wrap {
+  overflow-x: auto;
+  margin: 16px 0;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+.wire-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.wire-table th {
+  background: var(--surface);
+  padding: 10px 16px;
+  text-align: left;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+}
+.wire-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink3);
+  font-size: 14px;
+}
+.wire-table tr:last-child td { border-bottom: none; }
+.wire-table code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: rgba(0,196,154,0.08);
+  color: var(--teal-dark);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.code-explains { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
+.code-explain {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  transition: border-color .2s;
+}
+.code-explain:hover { border-color: rgba(0,196,154,0.3); }
+.ce-code {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  background: var(--ink);
+  color: var(--teal);
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+.ce-text { font-size: 14px; color: var(--ink3); line-height: 1.6; }
+.ce-text strong { color: var(--teal-dark); }
+
+.callout {
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 16px 0;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.callout-icon { font-size: 18px; flex-shrink: 0; }
+.callout-body strong { display: block; font-size: 14px; margin-bottom: 3px; }
+.callout-tip  { background: rgba(0,196,154,0.06); border: 1px solid rgba(0,196,154,0.2); color: var(--ink3); }
+.callout-tip .callout-body strong { color: var(--teal-dark); }
+.callout-warn { background: rgba(212,132,90,0.06); border: 1px solid rgba(212,132,90,0.2); color: var(--ink3); }
+.callout-warn .callout-body strong { color: var(--copper); }
+
+.quiz-section {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: 40px;
+  margin: 48px 0;
+}
+.quiz-section h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.quiz-section > p {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+.remember-strip {
+  background: var(--ink);
+  border-radius: var(--radius-xl);
+  padding: 36px 40px;
+  margin: 48px 0;
+}
+.remember-strip h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 20px;
+}
+.remember-items { display: flex; flex-direction: column; gap: 10px; }
+.remember-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,255,255,0.05);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-size: 15px;
+  color: rgba(255,255,255,0.8);
+}
+.ri-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+@media(max-width:640px){
+  .numlines { grid-template-columns: 1fr; }
+  .quiz-section { padding: 24px 20px; }
+  .remember-strip { padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+<div class="nav-mobile" id="mobile-nav-placeholder"></div>
+
+<div class="page-body">
+
+  <div class="session-banner">
+    <div class="session-banner-inner">
+      <div class="session-breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="sep">/</span>
+        <span>Session 2</span>
+      </div>
+      <div class="session-banner-meta">
+        <span class="session-num-tag">Session 02</span>
+        <span class="session-status-tag">✓ Completed</span>
+      </div>
+      <h1>Outputs & Actuators</h1>
+      <p>External LED, buzzer, servo motor, RGB LED — four actuators, one session.</p>
+      <div class="session-banner-tags">
+        <span class="tag tag-digital">Digital</span>
+        <span class="tag tag-analog">Analog/PWM</span>
+        <span class="tag tag-output">Output</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="session-progress">
+    <div class="session-progress-fill" style="width:40%"></div>
+  </div>
+  <div class="session-progress-label">
+    <span>Session 2 of 5</span>
+    <span>40% through the programme</span>
+  </div>
+
+  <div class="circuit-trace">
+    <div class="circuit-trace-line"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+    <div class="circuit-trace-dot trace-dot-marker"></div>
+  </div>
+
+  <div class="session-content">
+
+    <!-- SECTION 1 -->
+    <div class="concept-section reveal trace-dot-marker">
+      <h2><span class="section-num">1</span> What is an Actuator?</h2>
+      <p>An <strong>actuator</strong> is any device that converts electricity into something physical — something you can see, hear, or feel. In Session 1 you learned about outputs. Actuators are the outputs you will actually wire up and program in this session.</p>
+
+      <div class="example-grid">
+        <div class="example-card">
+          <div class="ex-emoji">📱</div>
+          <div class="ex-name">Phone screen</div>
+          <div class="ex-desc">Electricity becomes light you can see</div>
+        </div>
+        <div class="example-card">
+          <div class="ex-emoji">🔊</div>
+          <div class="ex-name">Speaker</div>
+          <div class="ex-desc">Electricity becomes sound you can hear</div>
+        </div>
+        <div class="example-card">
+          <div class="ex-emoji">🚗</div>
+          <div class="ex-name">Car engine</div>
+          <div class="ex-desc">Electricity becomes movement</div>
+        </div>
+        <div class="example-card">
+          <div class="ex-emoji">📳</div>
+          <div class="ex-name">Phone vibration</div>
+          <div class="ex-desc">Electricity becomes movement you can feel</div>
+        </div>
+      </div>
+
+      <div class="callout callout-tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">
+          <strong>One sentence to remember</strong>
+          If it does something physical when you send it electricity, it's an actuator.
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="concept-section reveal trace-dot-marker">
+      <h2><span class="section-num">2</span> Digital vs Analog Output</h2>
+      <p>Not all outputs work the same way. Some are simple on/off switches. Others let you control exactly how much power goes out — like a dimmer switch on a lamp.</p>
+
+      <div class="numlines">
+        <div class="numline-card nl-digital">
+          <div class="nl-title">🔵 Digital — only 2 values</div>
+          <div class="nl-track digital-track">
+            <div class="nl-dot nl-dot-off">0</div>
+            <div class="nl-line"></div>
+            <div class="nl-dot nl-dot-on">1</div>
+          </div>
+          <div class="nl-sub"><span>LOW = OFF</span><span>HIGH = ON</span></div>
+          <div class="nl-note">Like a light switch — fully on or fully off. Use <code style="font-family:var(--font-mono);font-size:11px;color:var(--teal);">digitalWrite()</code>.</div>
+        </div>
+        <div class="numline-card nl-analog">
+          <div class="nl-title">🟣 Analog (PWM) — 0 to 255 values</div>
+          <div class="nl-track analog-track">
+            <div class="nl-dot nl-dot-lo">0</div>
+            <div class="nl-line"></div>
+            <div class="nl-dot nl-dot-mid">128</div>
+            <div class="nl-line"></div>
+            <div class="nl-dot nl-dot-hi">255</div>
+          </div>
+          <div class="nl-sub"><span>Dim / Off</span><span>Full brightness</span></div>
+          <div class="nl-note">Like a dimmer switch. Use <code style="font-family:var(--font-mono);font-size:11px;color:var(--teal);">analogWrite()</code> — but only on PWM pins.</div>
+        </div>
+      </div>
+
+      <div class="callout callout-warn">
+        <span class="callout-icon">~</span>
+        <div class="callout-body">
+          <strong>PWM pins only</strong>
+          analogWrite() only works on pins marked with ~ on the Arduino Uno: 3, 5, 6, 9, 10, and 11. Using it on other pins won't give you dimming.
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="concept-section reveal trace-dot-marker">
+      <h2><span class="section-num">3</span> The 8 Actuators in the Kit</h2>
+      <p>Your Elegoo kit includes eight different actuators. You won't use all of them today — but knowing what's in the box helps you plan what to build later.</p>
+
+      <div class="actuator-grid">
+        <div class="actuator-card">
+          <div class="ac-emoji">💡</div>
+          <div class="ac-body">
+            <div class="ac-name">External LED</div>
+            <div class="ac-tags">
+              <span class="tag tag-output">Output</span>
+              <span class="tag tag-digital">Digital</span>
+              <span class="tag tag-analog">PWM</span>
+            </div>
+            <p class="ac-desc">Converts electricity into light. Can be ON/OFF or dimmed with analogWrite. Always needs a 220Ω resistor.</p>
+            <p class="ac-pin">Pins: any digital pin (2–13) · Needs 220Ω resistor</p>
+          </div>
+        </div>
+        <div class="actuator-card">
+          <div class="ac-emoji">🌈</div>
+          <div class="ac-body">
+            <div class="ac-name">RGB LED</div>
+            <div class="ac-tags">
+              <span class="tag tag-output">Output</span>
+              <span class="tag tag-analog">PWM ×3</span>
+            </div>
+            <p class="ac-desc">One LED, three colours inside — red, green, and blue. Mix them to make any colour. Needs 3 PWM pins and 3 resistors.</p>
+            <p class="ac-pin">Pins: 3 PWM pins + GND · 3 × 220Ω resistors</p>
+          </div>
+        </div>
+        <div class="actuator-card">
+          <div class="ac-emoji">🔔</div>
+          <div class="ac-body">
+            <div class="ac-name">Buzzer (Piezo)</div>
+            <div class="ac-tags">
+              <span class="tag tag-output">Output</span>
+              <span class="tag tag-digital">Digital</span>
+            </div>
+            <p class="ac-desc">Makes beeping sounds at different frequencies. Use tone() and noTone() — no resistor needed.</p>
+            <p class="ac-pin">Pins: any digital pin · No resistor</p>
+          </div>
+        </div>
+        <div class="actuator-card">
+          <div class="ac-emoji">⚙️</div>
+          <div class="ac-body">
+            <div class="ac-name">Servo Motor SG90</div>
+            <div class="ac-tags">
+              <span class="tag tag-output">Output</span>
+              <span class="tag tag-analog">PWM</span>
+            </div>
+            <p class="ac-desc">Rotates to a precise angle — 0° to 180°. Perfect for robot arms and steering wheels.</p>
+            <p class="ac-pin">3 wires: brown GND, red 5V, orange Signal</p>
+          </div>
+        </div>
+        <div class="actuator-card">
+          <div class="ac-emoji">🔄</div>
+          <div class="ac-body">
+            <div class="ac-name">DC Motor</div>
+            <div class="ac-tags">
+              <span class="tag tag-output">Output</span>
+              <span class="tag tag-analog">Analog speed</span>
+            </div>
+            <p class="ac-desc">Spins continuously — wheels, fans, propellers. Needs an L298N motor driver (Sessions 4 &amp; 5).</p>
+            <p class="ac-pin">Via L298N driver · Not direct to Arduino pins</p>
+          </div>
+        </div>
+        <div class="actuator-card">
+          <div class="ac-emoji">📺</div>
+          <div class="ac-body">
+            <div class="ac-name">LCD Screen 16×2</div>
+            <div class="ac-tags">
+              <span class="tag tag-output">Output</span>
+              <span class="tag tag-digital">Digital</span>
+            </div>
+            <p class="ac-desc">Shows text and numbers on two rows of 16 characters. Uses the LiquidCrystal library.</p>
+            <p class="ac-pin">6 digital pins · LiquidCrystal library</p>
+          </div>
+        </div>
+        <div class="actuator-card">
+          <div class="ac-emoji">⚡</div>
+          <div class="ac-body">
+            <div class="ac-name">Relay Module</div>
+            <div class="ac-tags">
+              <span class="tag tag-output">Output</span>
+              <span class="tag tag-digital">Digital</span>
+            </div>
+            <p class="ac-desc">Switches high-voltage devices on and off — lamps, fans, appliances. Handle with care.</p>
+            <p class="ac-pin">Digital pin · High voltage — adult supervision</p>
+          </div>
+        </div>
+        <div class="actuator-card">
+          <div class="ac-emoji">🌀</div>
+          <div class="ac-body">
+            <div class="ac-name">Stepper Motor</div>
+            <div class="ac-tags">
+              <span class="tag tag-output">Output</span>
+              <span class="tag tag-digital">Precise steps</span>
+            </div>
+            <p class="ac-desc">Moves in exact steps — great for 3D printers and precise positioning. Uses ULN2003 driver.</p>
+            <p class="ac-pin">Via ULN2003 driver board</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="concept-section reveal trace-dot-marker">
+      <h2><span class="section-num">4</span> External LED — Hands On</h2>
+      <p>Time to wire up your first external LED — not the tiny one on the board, but one you connect yourself on the breadboard.</p>
+
+      <div class="wire-table-wrap">
+        <table class="wire-table">
+          <thead>
+            <tr>
+              <th>Component Pin</th>
+              <th>Connect To</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Long leg (+)</td>
+              <td><code>Pin 7</code></td>
+              <td>220Ω resistor in series</td>
+            </tr>
+            <tr>
+              <td>Short leg (–)</td>
+              <td><code>GND</code></td>
+              <td>Direct connection</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-bar">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-filename">external_led.ino</span>
+        </div>
+        <pre><span class="ck">int</span> <span class="cv">ledPin</span> = <span class="cn">7</span>;
+
+<span class="ck">void</span> <span class="cf">setup</span>() {
+  <span class="cf">pinMode</span>(<span class="cv">ledPin</span>, <span class="cs">OUTPUT</span>);
+}
+
+<span class="ck">void</span> <span class="cf">loop</span>() {
+  <span class="cf">digitalWrite</span>(<span class="cv">ledPin</span>, <span class="cs">HIGH</span>);  <span class="cc">// LED ON</span>
+  <span class="cf">delay</span>(<span class="cn">500</span>);
+  <span class="cf">digitalWrite</span>(<span class="cv">ledPin</span>, <span class="cs">LOW</span>);   <span class="cc">// LED OFF</span>
+  <span class="cf">delay</span>(<span class="cn">500</span>);
+}</pre>
+      </div>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="concept-section reveal trace-dot-marker">
+      <h2><span class="section-num">5</span> Buzzer</h2>
+      <p>The piezo buzzer turns electricity into sound. Instead of just ON/OFF, you control the <strong>frequency</strong> — how high or low the beep sounds.</p>
+
+      <div class="wire-table-wrap">
+        <table class="wire-table">
+          <thead>
+            <tr>
+              <th>Component Pin</th>
+              <th>Connect To</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>+ (positive)</td>
+              <td><code>Pin 8</code></td>
+              <td>Direct connection</td>
+            </tr>
+            <tr>
+              <td>– (negative)</td>
+              <td><code>GND</code></td>
+              <td>Direct connection</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-explains">
+        <div class="code-explain">
+          <span class="ce-code">tone(pin, freq)</span>
+          <div class="ce-text">Plays a sound at the given frequency. <strong>262 = Middle C</strong>, 440 = A4, 1000 = high beep.</div>
+        </div>
+        <div class="code-explain">
+          <span class="ce-code">noTone(pin)</span>
+          <div class="ce-text">Stops the sound. Always call this before starting a new tone on the same pin.</div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-bar">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-filename">buzzer.ino</span>
+        </div>
+        <pre><span class="ck">int</span> <span class="cv">buzzerPin</span> = <span class="cn">8</span>;
+
+<span class="ck">void</span> <span class="cf">setup</span>() {
+  <span class="cf">pinMode</span>(<span class="cv">buzzerPin</span>, <span class="cs">OUTPUT</span>);
+}
+
+<span class="ck">void</span> <span class="cf">loop</span>() {
+  <span class="cf">tone</span>(<span class="cv">buzzerPin</span>, <span class="cn">1000</span>);
+  <span class="cf">delay</span>(<span class="cn">500</span>);
+  <span class="cf">noTone</span>(<span class="cv">buzzerPin</span>);
+  <span class="cf">delay</span>(<span class="cn">500</span>);
+}</pre>
+      </div>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="concept-section reveal trace-dot-marker">
+      <h2><span class="section-num">6</span> Servo Motor</h2>
+      <p>A servo rotates to an exact angle — not just spinning freely like a DC motor. To control it, you need an extra toolkit: the Servo library. Think of <code style="font-family:var(--font-mono);font-size:12px;color:var(--teal-dark);">#include</code> as borrowing tools someone else already built so you don't have to write everything from scratch.</p>
+
+      <div class="wire-table-wrap">
+        <table class="wire-table">
+          <thead>
+            <tr>
+              <th>Wire Colour</th>
+              <th>Connect To</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Red</td>
+              <td><code>5V</code></td>
+              <td>Power supply</td>
+            </tr>
+            <tr>
+              <td>Brown / Black</td>
+              <td><code>GND</code></td>
+              <td>Ground</td>
+            </tr>
+            <tr>
+              <td>Orange / Yellow</td>
+              <td><code>Pin 9</code></td>
+              <td>Signal — PWM pin</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-bar">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-filename">servo.ino</span>
+        </div>
+        <pre><span class="ck">#include</span> <span class="cs">&lt;Servo.h&gt;</span>
+
+<span class="ck">Servo</span> <span class="cv">myServo</span>;
+
+<span class="ck">void</span> <span class="cf">setup</span>() {
+  <span class="cv">myServo</span>.<span class="cf">attach</span>(<span class="cn">9</span>);
+}
+
+<span class="ck">void</span> <span class="cf">loop</span>() {
+  <span class="cv">myServo</span>.<span class="cf">write</span>(<span class="cn">0</span>);
+  <span class="cf">delay</span>(<span class="cn">1000</span>);
+  <span class="cv">myServo</span>.<span class="cf">write</span>(<span class="cn">90</span>);
+  <span class="cf">delay</span>(<span class="cn">1000</span>);
+  <span class="cv">myServo</span>.<span class="cf">write</span>(<span class="cn">180</span>);
+  <span class="cf">delay</span>(<span class="cn">1000</span>);
+}</pre>
+      </div>
+
+      <div class="callout callout-tip">
+        <span class="callout-icon">📐</span>
+        <div class="callout-body">
+          <strong>Angles matter</strong>
+          myServo.write(0) goes all the way left. write(90) is the middle. write(180) goes all the way right.
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 7 -->
+    <div class="concept-section reveal trace-dot-marker">
+      <h2><span class="section-num">7</span> RGB LED</h2>
+      <p>An RGB LED has three tiny LEDs inside — red, green, and blue. By mixing different brightness levels with analogWrite, you can create almost any colour.</p>
+
+      <div class="wire-table-wrap">
+        <table class="wire-table">
+          <thead>
+            <tr>
+              <th>Leg</th>
+              <th>Connect To</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Red leg</td>
+              <td><code>Pin 9</code></td>
+              <td>220Ω resistor in series</td>
+            </tr>
+            <tr>
+              <td>GND leg (longest)</td>
+              <td><code>GND</code></td>
+              <td>Direct connection</td>
+            </tr>
+            <tr>
+              <td>Green leg</td>
+              <td><code>Pin 10</code></td>
+              <td>220Ω resistor in series</td>
+            </tr>
+            <tr>
+              <td>Blue leg</td>
+              <td><code>Pin 11</code></td>
+              <td>220Ω resistor in series</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-bar">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-filename">rgb_led.ino</span>
+        </div>
+        <pre><span class="ck">int</span> <span class="cv">redPin</span>   = <span class="cn">9</span>;
+<span class="ck">int</span> <span class="cv">greenPin</span> = <span class="cn">10</span>;
+<span class="ck">int</span> <span class="cv">bluePin</span>  = <span class="cn">11</span>;
+
+<span class="ck">void</span> <span class="cf">setup</span>() {
+  <span class="cf">pinMode</span>(<span class="cv">redPin</span>,   <span class="cs">OUTPUT</span>);
+  <span class="cf">pinMode</span>(<span class="cv">greenPin</span>, <span class="cs">OUTPUT</span>);
+  <span class="cf">pinMode</span>(<span class="cv">bluePin</span>,  <span class="cs">OUTPUT</span>);
+}
+
+<span class="ck">void</span> <span class="cf">loop</span>() {
+  <span class="cc">// RED</span>
+  <span class="cf">analogWrite</span>(<span class="cv">redPin</span>, <span class="cn">255</span>); <span class="cf">analogWrite</span>(<span class="cv">greenPin</span>, <span class="cn">0</span>);   <span class="cf">analogWrite</span>(<span class="cv">bluePin</span>, <span class="cn">0</span>);
+  <span class="cf">delay</span>(<span class="cn">1000</span>);
+  <span class="cc">// GREEN</span>
+  <span class="cf">analogWrite</span>(<span class="cv">redPin</span>, <span class="cn">0</span>);   <span class="cf">analogWrite</span>(<span class="cv">greenPin</span>, <span class="cn">255</span>); <span class="cf">analogWrite</span>(<span class="cv">bluePin</span>, <span class="cn">0</span>);
+  <span class="cf">delay</span>(<span class="cn">1000</span>);
+  <span class="cc">// YELLOW</span>
+  <span class="cf">analogWrite</span>(<span class="cv">redPin</span>, <span class="cn">255</span>); <span class="cf">analogWrite</span>(<span class="cv">greenPin</span>, <span class="cn">200</span>); <span class="cf">analogWrite</span>(<span class="cv">bluePin</span>, <span class="cn">0</span>);
+  <span class="cf">delay</span>(<span class="cn">1000</span>);
+  <span class="cc">// BLUE</span>
+  <span class="cf">analogWrite</span>(<span class="cv">redPin</span>, <span class="cn">0</span>);   <span class="cf">analogWrite</span>(<span class="cv">greenPin</span>, <span class="cn">0</span>);   <span class="cf">analogWrite</span>(<span class="cv">bluePin</span>, <span class="cn">255</span>);
+  <span class="cf">delay</span>(<span class="cn">1000</span>);
+}</pre>
+      </div>
+
+      <div class="callout callout-tip" style="margin-top:20px;">
+        <span class="callout-icon">🌐</span>
+        <div class="callout-body">
+          <strong>Try it on Wokwi</strong>
+          Build this circuit at <a href="https://wokwi.com" target="_blank" style="color:var(--teal-dark);font-weight:600;">wokwi.com</a> before touching real hardware — great for testing your code safely.
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="quiz-section reveal">
+      <h2>✏️ Test Yourself</h2>
+      <p>Tap an option to answer. No pressure — this is for you to see what you know.</p>
+
+      <div class="quiz-wrap">
+
+        <div class="quiz-item" data-correct="C">
+          <div class="quiz-q"><span class="q-num">1</span> What is an actuator?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-value="A"><span class="opt-letter">A</span> A sensor that reads the environment</div>
+            <div class="quiz-option" data-value="B"><span class="opt-letter">B</span> The Arduino board itself</div>
+            <div class="quiz-option" data-value="C"><span class="opt-letter">C</span> A device that converts electricity into something physical</div>
+          </div>
+          <button class="quiz-reveal-btn">Show answer</button>
+          <div class="quiz-answer">✓ C — Actuators are output devices. They turn electricity into light, sound, movement, or other physical effects.</div>
+        </div>
+
+        <div class="quiz-item" data-correct="B">
+          <div class="quiz-q"><span class="q-num">2</span> Which function controls analog output?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-value="A"><span class="opt-letter">A</span> digitalWrite()</div>
+            <div class="quiz-option" data-value="B"><span class="opt-letter">B</span> analogWrite()</div>
+            <div class="quiz-option" data-value="C"><span class="opt-letter">C</span> pinMode()</div>
+          </div>
+          <button class="quiz-reveal-btn">Show answer</button>
+          <div class="quiz-answer">✓ B — analogWrite() sends a PWM signal from 0 to 255, letting you dim an LED or control motor speed.</div>
+        </div>
+
+        <div class="quiz-item" data-correct="B">
+          <div class="quiz-q"><span class="q-num">3</span> What values does analogWrite() accept?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-value="A"><span class="opt-letter">A</span> 0 and 1 only</div>
+            <div class="quiz-option" data-value="B"><span class="opt-letter">B</span> 0 to 255</div>
+            <div class="quiz-option" data-value="C"><span class="opt-letter">C</span> 0 to 1023</div>
+          </div>
+          <button class="quiz-reveal-btn">Show answer</button>
+          <div class="quiz-answer">✓ B — analogWrite() uses 256 levels from 0 (off) to 255 (full power). Don't confuse this with analogRead(), which reads 0–1023.</div>
+        </div>
+
+        <div class="quiz-item" data-correct="C">
+          <div class="quiz-q"><span class="q-num">4</span> Which pins support PWM on the Arduino Uno?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-value="A"><span class="opt-letter">A</span> All digital pins (0–13)</div>
+            <div class="quiz-option" data-value="B"><span class="opt-letter">B</span> Only pin 13</div>
+            <div class="quiz-option" data-value="C"><span class="opt-letter">C</span> Pins 3, 5, 6, 9, 10, 11 (marked with ~)</div>
+          </div>
+          <button class="quiz-reveal-btn">Show answer</button>
+          <div class="quiz-answer">✓ C — Look for the ~ symbol next to the pin number on the board. Those six pins support analogWrite().</div>
+        </div>
+
+        <div class="quiz-item" data-correct="B">
+          <div class="quiz-q"><span class="q-num">5</span> What does tone() do?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-value="A"><span class="opt-letter">A</span> Turns an LED on and off</div>
+            <div class="quiz-option" data-value="B"><span class="opt-letter">B</span> Plays a sound at a given frequency</div>
+            <div class="quiz-option" data-value="C"><span class="opt-letter">C</span> Reads a sensor value</div>
+          </div>
+          <button class="quiz-reveal-btn">Show answer</button>
+          <div class="quiz-answer">✓ B — tone(pin, frequency) makes the buzzer beep. Higher frequency = higher pitch. 440 Hz is the note A4.</div>
+        </div>
+
+        <div class="quiz-item" data-correct="A">
+          <div class="quiz-q"><span class="q-num">6</span> What does #include do?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-value="A"><span class="opt-letter">A</span> Borrows a library — extra tools someone already built</div>
+            <div class="quiz-option" data-value="B"><span class="opt-letter">B</span> Uploads code to the Arduino</div>
+            <div class="quiz-option" data-value="C"><span class="opt-letter">C</span> Turns the board off</div>
+          </div>
+          <button class="quiz-reveal-btn">Show answer</button>
+          <div class="quiz-answer">✓ A — #include &lt;Servo.h&gt; gives you servo commands like attach() and write() without writing them yourself.</div>
+        </div>
+
+        <div class="quiz-item" data-correct="B">
+          <div class="quiz-q"><span class="q-num">7</span> How do you tell a servo to go to 90 degrees?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-value="A"><span class="opt-letter">A</span> digitalWrite(90)</div>
+            <div class="quiz-option" data-value="B"><span class="opt-letter">B</span> myServo.write(90)</div>
+            <div class="quiz-option" data-value="C"><span class="opt-letter">C</span> analogRead(90)</div>
+          </div>
+          <button class="quiz-reveal-btn">Show answer</button>
+          <div class="quiz-answer">✓ B — myServo.write(90) rotates the servo arm to the middle position (90° out of 180°).</div>
+        </div>
+
+        <div class="quiz-item" data-correct="C">
+          <div class="quiz-q"><span class="q-num">8</span> What three colours does an RGB LED contain?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-value="A"><span class="opt-letter">A</span> Red, yellow, blue</div>
+            <div class="quiz-option" data-value="B"><span class="opt-letter">B</span> Red, white, black</div>
+            <div class="quiz-option" data-value="C"><span class="opt-letter">C</span> Red, green, blue</div>
+          </div>
+          <button class="quiz-reveal-btn">Show answer</button>
+          <div class="quiz-answer">✓ C — RGB stands for Red, Green, Blue. Mix them at different brightness levels to create other colours like yellow or purple.</div>
+        </div>
+
+        <div class="quiz-item" data-correct="A">
+          <div class="quiz-q"><span class="q-num">9</span> Is a buzzer digital or analog?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-value="A"><span class="opt-letter">A</span> Digital — it uses tone() on/off signals</div>
+            <div class="quiz-option" data-value="B"><span class="opt-letter">B</span> Analog — it uses analogWrite()</div>
+            <div class="quiz-option" data-value="C"><span class="opt-letter">C</span> Neither — it doesn't connect to pins</div>
+          </div>
+          <button class="quiz-reveal-btn">Show answer</button>
+          <div class="quiz-answer">✓ A — The buzzer is controlled digitally with tone() and noTone(). You set a frequency, but the control method is digital.</div>
+        </div>
+
+        <div class="quiz-item" data-correct="C">
+          <div class="quiz-q"><span class="q-num">10</span> What does noTone() do?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" data-value="A"><span class="opt-letter">A</span> Makes the buzzer louder</div>
+            <div class="quiz-option" data-value="B"><span class="opt-letter">B</span> Changes the frequency</div>
+            <div class="quiz-option" data-value="C"><span class="opt-letter">C</span> Stops the sound</div>
+          </div>
+          <button class="quiz-reveal-btn">Show answer</button>
+          <div class="quiz-answer">✓ C — noTone(pin) silences the buzzer. Call it after tone() when you want the beeping to stop.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- REMEMBER -->
+    <div class="remember-strip reveal">
+      <h2>🧠 The 5 Things to Remember</h2>
+      <div class="remember-items">
+        <div class="remember-item"><div class="ri-num">1</div> Actuators are output devices that do something physical</div>
+        <div class="remember-item"><div class="ri-num">2</div> Digital = 2 values (0/1). Analog = 256 values (0–255)</div>
+        <div class="remember-item"><div class="ri-num">3</div> analogWrite() only works on PWM pins (marked ~)</div>
+        <div class="remember-item"><div class="ri-num">4</div> #include borrows a library — extra tools someone already built</div>
+        <div class="remember-item"><div class="ri-num">5</div> tone(pin, frequency) makes sound. noTone(pin) stops it.</div>
+      </div>
+    </div>
+
+    <!-- PREV / NEXT -->
+    <div class="session-nav reveal">
+      <a href="session1.html" class="session-nav-card prev">
+        <div class="nav-card-dir"><span class="arrow">←</span> Previous</div>
+        <div class="nav-card-title">Session 1 — Introduction to Arduino</div>
+        <div class="nav-card-sub">The big model, your first blink program</div>
+      </a>
+      <div class="session-nav-card next locked">
+        <div class="nav-card-dir">Next <span class="arrow">→</span></div>
+        <div class="nav-card-title">Session 3 — Sensors & Inputs</div>
+        <div class="nav-card-sub">Coming soon</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="js/main.js"></script>
+<script>
+  document.getElementById('nav-placeholder').outerHTML = renderNav('dark');
+  document.getElementById('footer-placeholder').outerHTML = renderFooter();
+</script>
+</body>
+</html>
