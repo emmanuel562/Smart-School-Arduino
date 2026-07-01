@@ -143,33 +143,83 @@
   margin-bottom: 20px;
 }
 
-/* Model visual */
-.model-visual {
-  display: flex;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  margin: 20px 0;
+/* The Big Idea section */
+.model-section {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  margin-bottom: 24px;
 }
-.mv-node {
-  flex: 1;
-  padding: 24px 20px;
+.model-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+.model-node {
+  flex: 0 1 220px;
+  width: 320px;
+  min-height: 320px;
+  background: var(--ink2);
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  border: 2px solid;
+  transition: transform .2s;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 14px;
+  justify-content: center;
 }
-.mv-input   { background: #1A2332; }
-.mv-process { background: #1E1F2E; }
-.mv-output  { background: #231A1A; }
-.mv-arrow   { display: flex; align-items: center; justify-content: center; background: #151C28; color: var(--teal); font-size: 18px; padding: 0 8px; }
-.mv-emoji { font-size: 28px; }
-.mv-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.35); }
-.mv-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; }
-.mv-input  .mv-title { color: #60A5FA; }
-.mv-process .mv-title { color: var(--yellow); }
-.mv-output .mv-title { color: var(--copper); }
-.mv-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
-.mv-chip { font-size: 11px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.45); padding: 2px 8px; border-radius: 12px; }
+.model-node:hover { transform: scale(1.03); }
+.model-node-input { border-color: #60A5FA; }
+.model-node-input .n-title { color: #60A5FA; }
+.model-node-process { border-color: var(--yellow); }
+.model-node-process .n-title { color: var(--yellow); }
+.model-node-output { border-color: var(--copper); }
+.model-node-output .n-title { color: var(--copper); }
+.model-arrow-col {
+  font-size: 28px;
+  color: var(--muted);
+  padding: 0 8px;
+  flex-shrink: 0;
+  font-weight: 700;
+}
+.model-node .n-emoji { font-size: 36px; }
+.model-node .n-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+.model-node .n-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--white);
+}
+.model-node .n-desc {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+}
+.model-node .n-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 4px;
+}
+.model-node .n-chip {
+  font-size: 11px;
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.45);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
 
 /* Board anatomy */
 .board-parts { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
@@ -352,8 +402,7 @@
 }
 
 @media(max-width:640px){
-  .model-visual { flex-direction: column; }
-  .mv-arrow { transform: rotate(90deg); padding: 8px 0; }
+  .model-flow { flex-direction: column; }
   .numlines { grid-template-columns: 1fr; }
   .quiz-section { padding: 24px 20px; }
   .remember-strip { padding: 24px 20px; }
@@ -409,53 +458,51 @@
 
   <div class="session-content">
 
-    <!-- ── SECTION 1: THE BIG MODEL ── -->
+    <!-- ── SECTION 1: THE BIG IDEA ── -->
     <div class="concept-section reveal trace-dot-marker">
-      <h2><span class="section-num">1</span> The Big Model</h2>
-      <p>Every electronic device in the world — from your phone to a robot to a traffic light — follows the same three-step pattern. Once you understand this, you can make sense of any piece of technology.</p>
-
-      <div class="model-visual">
-        <div class="mv-node mv-input">
-          <div class="mv-emoji">👂</div>
-          <div class="mv-label">Step 1</div>
-          <div class="mv-title">Input</div>
-          <div class="mv-chips">
-            <span class="mv-chip">Microphone</span>
-            <span class="mv-chip">Button</span>
-            <span class="mv-chip">Motion sensor</span>
-            <span class="mv-chip">Light sensor</span>
-            <span class="mv-chip">Your code</span>
-          </div>
+      <div class="model-section">
+        <div class="reveal">
+          <div class="eyebrow">The Big Idea</div>
+          <h2 class="section-title">Every electronic device in the world does this</h2>
+          <p class="section-sub">From your phone to a traffic light to this robot — they all follow the same three-step pattern.</p>
         </div>
-        <div class="mv-arrow">→</div>
-        <div class="mv-node mv-process">
-          <div class="mv-emoji">⚙️</div>
-          <div class="mv-label">Step 2</div>
-          <div class="mv-title">Processing</div>
-          <div class="mv-chips">
-            <span class="mv-chip">Arduino board</span>
-            <span class="mv-chip">Your C++ code</span>
+        <div class="model-flow reveal reveal-delay-1">
+          <div class="model-node model-node-input">
+            <span class="n-emoji">👂</span>
+            <span class="n-label">Step 1</span>
+            <div class="n-title">Input</div>
+            <p class="n-desc">Collects information from the world around it.</p>
+            <div class="n-examples">
+              <span class="n-chip">Microphone</span>
+              <span class="n-chip">Button</span>
+              <span class="n-chip">Motion sensor</span>
+              <span class="n-chip">Light sensor</span>
+            </div>
           </div>
-        </div>
-        <div class="mv-arrow">→</div>
-        <div class="mv-node mv-output">
-          <div class="mv-emoji">📢</div>
-          <div class="mv-label">Step 3</div>
-          <div class="mv-title">Output</div>
-          <div class="mv-chips">
-            <span class="mv-chip">LED</span>
-            <span class="mv-chip">Buzzer</span>
-            <span class="mv-chip">Motor</span>
-            <span class="mv-chip">Screen</span>
+          <div class="model-arrow-col">→</div>
+          <div class="model-node model-node-process">
+            <span class="n-emoji">⚙️</span>
+            <span class="n-label">Step 2</span>
+            <div class="n-title">Processing</div>
+            <p class="n-desc">Reads your code and decides what to do.</p>
+            <div class="n-examples">
+              <span class="n-chip">Arduino Uno</span>
+              <span class="n-chip">Your C++ code</span>
+            </div>
           </div>
-        </div>
-      </div>
-
-      <div class="callout callout-tip">
-        <span class="callout-icon">💡</span>
-        <div class="callout-body">
-          <strong>Remember this</strong>
-          The Arduino board is always the Processing unit — the brain in the middle. It receives information from inputs, runs your code, and decides what outputs to trigger.
+          <div class="model-arrow-col">→</div>
+          <div class="model-node model-node-output">
+            <span class="n-emoji">📢</span>
+            <span class="n-label">Step 3</span>
+            <div class="n-title">Output</div>
+            <p class="n-desc">Does something physical you can see, hear, or feel.</p>
+            <div class="n-examples">
+              <span class="n-chip">LED</span>
+              <span class="n-chip">Buzzer</span>
+              <span class="n-chip">Servo motor</span>
+              <span class="n-chip">Screen</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

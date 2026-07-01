@@ -84,31 +84,73 @@ document.addEventListener('DOMContentLoaded', () => {
     const answer    = item.querySelector('.quiz-answer');
     const revealBtn = item.querySelector('.quiz-reveal-btn');
     const correct   = item.dataset.correct;
+    let attempts = 0;
+    let completed = false;
+
+    const setFeedback = (message, tone = 'info') => {
+      if (!answer) return;
+      answer.textContent = message;
+      answer.style.display = 'block';
+      answer.classList.remove('correct', 'wrong');
+      if (tone === 'correct') answer.classList.add('correct');
+      if (tone === 'wrong') answer.classList.add('wrong');
+    };
+
+    const finishWithAnswer = (message) => {
+      completed = true;
+      options.forEach(opt => {
+        opt.style.pointerEvents = 'none';
+        opt.classList.remove('wrong');
+        if (opt.dataset.value === correct) {
+          opt.classList.add('correct');
+        } else {
+          opt.classList.add('disabled');
+        }
+      });
+      if (revealBtn) revealBtn.disabled = true;
+      setFeedback(message, 'wrong');
+    };
 
     options.forEach(opt => {
       opt.addEventListener('click', () => {
-        if (item.dataset.answered) return;
-        item.dataset.answered = true;
+        if (completed || opt.classList.contains('disabled')) return;
 
-        options.forEach(o => {
-          if (o.dataset.value === correct) o.classList.add('correct');
-          else o.classList.add('wrong');
-        });
+        attempts += 1;
+        if (revealBtn) revealBtn.disabled = false;
 
-        if (answer) answer.style.display = 'block';
-        if (revealBtn) revealBtn.style.display = 'none';
+        if (opt.dataset.value === correct) {
+          completed = true;
+          opt.classList.add('correct');
+          options.forEach(o => {
+            o.style.pointerEvents = 'none';
+            if (o !== opt) {
+              o.classList.add('disabled');
+              o.classList.remove('wrong');
+            }
+          });
+          if (revealBtn) revealBtn.disabled = true;
+          setFeedback('✓ Correct! That is the right answer.', 'correct');
+          return;
+        }
+
+        opt.classList.add('wrong');
+        opt.classList.add('disabled');
+        opt.style.pointerEvents = 'none';
+
+        const remainingOptions = [...options].filter(o => !o.classList.contains('disabled'));
+        if (remainingOptions.length === 1) {
+          finishWithAnswer('Not quite. The only remaining answer is the correct one.');
+          return;
+        }
+
+        setFeedback('Not quite. Try another option.', 'wrong');
       });
     });
 
     if (revealBtn && answer) {
       revealBtn.addEventListener('click', () => {
-        options.forEach(o => {
-          if (o.dataset.value === correct) o.classList.add('correct');
-          else o.classList.add('wrong');
-        });
-        answer.style.display = 'block';
-        revealBtn.style.display = 'none';
-        item.dataset.answered = true;
+        if (completed || attempts === 0) return;
+        finishWithAnswer('The correct answer is now highlighted.');
       });
     }
   });
