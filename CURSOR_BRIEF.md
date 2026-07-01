@@ -656,4 +656,23 @@ No build step. No configuration. It just works.
 
 ---
 
-*This brief was written by Claude (Anthropic) as a handoff document for Cursor to continue the Smart School website build. All design decisions, component patterns, and content specs described here match what has already been built. Follow this document exactly to maintain consistency.*
+## 14. RECENT PROGRESS (2026-07-01)
+
+A quick summary of the current workspace state taken from the repository on the date above. Use this as the single source of truth for what is implemented and what remains:
+
+- **Pages completed:** `index.html`, `about.html`, `resources.html`, `glossary.html`, `session1.html`, `session2.html` — these are fully built and styled.
+- **Session shells:** `session3.html`, `session4.html`, `session5.html` exist as "Coming Soon" shells with correct banners, progress bars, and locked navigation.
+- **Design system:** `css/styles.css` contains the colour tokens, typography tokens, spacing, and shared classes used across pages.
+- **Shared JavaScript:** `js/main.js` implements the injected nav/footer (`renderNav()` / `renderFooter()`), mobile nav, active link highlighting, circuit trace, scroll reveal, quiz logic, and glossary search.
+- **Session 2 content:** Complete — includes actuator catalogue, wiring tables, code examples, quiz (10 questions), and the "5 Things to Remember" strip.
+- **No build toolchain:** Project is pure static HTML/CSS/JS and deploys directly to GitHub Pages (no npm or bundlers required).
+
+Notes and recommended next steps:
+
+- Keep following the rules in section 11 (no frameworks, use CSS variables, inject nav/footer from `main.js`).
+- When adding content for Sessions 3–5, follow the exact session anatomy and component patterns (wiring tables, actuator cards, `.reveal` / `.trace-dot-marker`, quiz data attributes).
+- Test any hardware examples first with the Wokwi simulator link already referenced in `session2.html`.
+
+---
+
+*This brief was originally written as a handoff document. It was reviewed and updated on 2026-07-01 to reflect the current repository contents and progress.*
