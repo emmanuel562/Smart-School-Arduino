@@ -219,7 +219,7 @@ function renderFooter() {
             <span class="logo-text">Smart<em style="font-style:normal;color:var(--teal);">School</em></span>
           </div>
           <p>A robotics education programme bringing real engineering skills to Nigerian students — from primary school to secondary.</p>
-          <p class="axora-credit">Powered by <strong>Axora Labs</strong> · connecting minds. engineering the future.</p>
+          <p class="axora-credit">Powered by <strong>Axora Labs</strong> · connecting minds. engineering the future. It is powered by <strong>BLASS College</strong>.</p>
         </div>
         <div class="footer-col">
           <h4>Sessions</h4>
@@ -250,7 +250,7 @@ function renderFooter() {
       </div>
       <div class="footer-bottom">
         <p>© 2026 Smart School · Government Robotics Education Initiative</p>
-        <p>Built with ❤️ by <span>Axora Labs</span></p>
+        <p>Built by <span>Moses Emmanuel</span></p>
       </div>
     </div>
   </footer>`;
